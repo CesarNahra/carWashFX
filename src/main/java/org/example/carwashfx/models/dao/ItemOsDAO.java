@@ -106,6 +106,7 @@ public class ItemOsDAO {
 
         itemOs.setServiceOrder(serviceOrder);
         itemOs.setService(service);
+
         return itemOs;
     }
 }

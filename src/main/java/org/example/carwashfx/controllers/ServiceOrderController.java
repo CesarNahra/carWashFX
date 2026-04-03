@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.controlsfx.control.PropertySheet;
 import org.example.carwashfx.models.dao.ItemOsDAO;
 import org.example.carwashfx.models.dao.ServiceDAO;
 import org.example.carwashfx.models.dao.ServiceOrderDAO;
@@ -185,19 +186,6 @@ public class ServiceOrderController implements Initializable {
         tfVehicleColor.setText(vehicle.getColor().getColorName());
     }
 
-    public void loadTableServiceList() {
-        tcServiceId.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
-        tcServiceDescription.setCellValueFactory(new PropertyValueFactory<>("serviceDescription"));
-        tcServicePrice.setCellValueFactory(new PropertyValueFactory<>("servicePrice"));
-        tcGivenPoints.setCellValueFactory(new PropertyValueFactory<>("givenPoints"));
-        tcVehicleCategoryService.setCellValueFactory(new PropertyValueFactory<>("category"));
-
-        serviceList = serviceDAO.getAllServices();
-
-        observableServiceList = FXCollections.observableArrayList(serviceList);
-        tableViewServices.setItems(observableServiceList);
-    }
-
     public void loadTableItems() {
         tcServiceId.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
         tcServiceDescription.setCellValueFactory(new PropertyValueFactory<>("serviceDescription"));
@@ -361,15 +349,14 @@ public class ServiceOrderController implements Initializable {
         itemOsDAO.setConnection(connection);
 
         loadTableItems();
-        loadTableServiceList();
 
-        for(ServiceModel service: serviceDAO.getAllServices()) {
-            value += service.getServicePrice();
+        for(ItemOsModel itemOs: itemOsDAO.getAllItemOs()) {
+            value += itemOs.getServiceValue();
 
             String formattedValue = String.format("R$ %.2f", value);
             String formattedDiscount = String.format("R$ %.2f", discount);
 
-            points += service.getGivenPoints();
+            points += itemOs.getServiceGivenPoints();
 
             lbGivenPoints.setText(String.valueOf(points));
             lbServiceSubtotal.setText(formattedValue);
@@ -377,9 +364,12 @@ public class ServiceOrderController implements Initializable {
             lbServiceTotal.setText(formattedValue);
         }
 
-        tableViewServices.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        tableViewItems.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             btRemoveService.setVisible(true);
         });
+
+        serviceList = serviceDAO.getAllServices();
+        observableServiceList = FXCollections.observableArrayList(serviceList);
 
         cbServicesChosen.setItems(observableServiceList);
         cbServicesChosen.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -395,7 +385,7 @@ public class ServiceOrderController implements Initializable {
             if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.CLOSED) {
                 cbServicesChosen.setDisable(true);
                 checkBoxClientScore.setDisable(true);
-                tableViewServices.setDisable(true);
+                tableViewItems.setDisable(true);
                 btCancelService.setDisable(true);
                 btCancelService.setVisible(false);
                 btAddService.setDisable(true);
@@ -403,7 +393,7 @@ public class ServiceOrderController implements Initializable {
             } else if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.CANCELED) {
                 cbServicesChosen.setDisable(true);
                 checkBoxClientScore.setDisable(true);
-                tableViewServices.setDisable(true);
+                tableViewItems.setDisable(true);
                 btCancelService.setDisable(true);
                 btCancelService.setVisible(false);
                 btAddService.setDisable(true);
@@ -416,7 +406,7 @@ public class ServiceOrderController implements Initializable {
             } else {
                 cbServicesChosen.setDisable(false);
                 checkBoxClientScore.setDisable(false);
-                tableViewServices.setDisable(false);
+                tableViewItems.setDisable(false);
                 btCancelService.setDisable(false);
                 btCancelService.setVisible(true);
                 btAddService.setDisable(false);
