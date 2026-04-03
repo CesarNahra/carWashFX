@@ -1,6 +1,7 @@
 package org.example.carwashfx.controllers;
 
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.controlsfx.control.PropertySheet;
 import org.example.carwashfx.models.dao.ItemOsDAO;
 import org.example.carwashfx.models.dao.ServiceDAO;
 import org.example.carwashfx.models.dao.ServiceOrderDAO;
@@ -199,7 +201,11 @@ public class ServiceOrderController implements Initializable {
     }
 
     public void loadTableItems() {
-        tcServiceId.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
+//        tcServiceId.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
+        tcServiceId.setCellValueFactory(cellData -> {
+            ItemOsModel itemOs = cellData.getValue();
+            return new SimpleObjectProperty<>(itemOs.getServiceId());
+        });
         tcServiceDescription.setCellValueFactory(new PropertyValueFactory<>("serviceDescription"));
         tcServicePrice.setCellValueFactory(new PropertyValueFactory<>("servicePrice"));
         tcGivenPoints.setCellValueFactory(new PropertyValueFactory<>("serviceGivenPoints"));

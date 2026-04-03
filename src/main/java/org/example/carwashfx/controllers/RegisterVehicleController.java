@@ -172,14 +172,17 @@ public class RegisterVehicleController implements Initializable {
         vehicle.getModel().setCategory(category);
         vehicle.getModel().getEngine().setGasType(gasType);
 
+        VehicleModel vehicle = new VehicleModel();
+
+        client.addVehicle(vehicle);
+        vehicle.setClient(client);
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação de novo veículo");
         alert.setHeaderText(null);
         alert.setContentText(vehicle.getVehicleData());
         alert.showAndWait();
-
-        client.addVehicle(vehicle);
-        vehicle.setClient(client);
+        
         vehicleDAO.insertVehicle(vehicle);
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
