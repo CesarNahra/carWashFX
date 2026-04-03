@@ -1,0 +1,26 @@
+.root {
+    -fx-font-family: Arial;
+    -fx-background-color: #4682B4
+}
+
+.label {
+    -fx-font-family: Arial;
+}
+
+.button {
+    -fx-font-family: Arial;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.text-field {
+    -fx-font-family: Arial;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.choice-box {
+    -fx-font-family: Arial;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
