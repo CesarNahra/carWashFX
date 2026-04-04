@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.controlsfx.control.PropertySheet;
 import org.example.carwashfx.models.dao.ItemOsDAO;
 import org.example.carwashfx.models.dao.ServiceDAO;
 import org.example.carwashfx.models.dao.ServiceOrderDAO;
@@ -24,7 +23,6 @@ import org.example.carwashfx.models.domain.ServiceOrderModel;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -137,13 +135,7 @@ public class ServiceOrderController implements Initializable {
     private TableColumn<ItemOsModel, String> tcItemObservations;
 
     @FXML
-    private TableView<ServiceModel> tableViewServices;
-
-    @FXML
     private TableView<ItemOsModel> tableViewItems;
-
-    @FXML
-    private Button btUpdateVehicle;
 
     @FXML
     private Button btCancelService;
@@ -173,9 +165,12 @@ public class ServiceOrderController implements Initializable {
     private double discount = 0;
     private double multa = 0;
 
-    String formattedValue = String.format("R$ %.2f", value);
-    String formattedDiscount = String.format("R$ %.2f", discount);
-
+    private void updateTotalsUI() {
+        lbGivenPoints.setText(String.valueOf(points));
+        lbServiceSubtotal.setText(String.format("R$ %.2f", value));
+        lbServiceDiscount.setText(String.format("R$ %.2f", discount));
+        lbServiceTotal.setText(String.format("R$ %.2f", value));
+    }
 
     public void loadVehicleData(VehicleModel vehicle) {
         tfVehiclePlate.setText(vehicle.getVehiclePlate());
@@ -316,25 +311,17 @@ public class ServiceOrderController implements Initializable {
     @FXML
     protected void onHandleAddService(ActionEvent event) {
         ServiceModel serviceAdded = cbServicesChosen.getSelectionModel().getSelectedItem();
-        ServiceOrderModel serviceOrder = new ServiceOrderModel();
+        ItemOsModel itemOs = new ItemOsModel();
 
-        for(ItemOsModel itemOs: itemOsDAO.getAllItemOs()) {
-            value += itemOs.getServicePrice();
-            points += itemOs.getServiceGivenPoints();
+        itemOs.setService(serviceAdded);
 
-            itemOs.setService(serviceAdded);
+        value += serviceAdded.getServicePrice();
+        points += serviceAdded.getGivenPoints();
 
-            tableViewItems.getItems().add(itemOs);
-            serviceOrder.getItemOsList().add(itemOs);
-        }
+        tableViewItems.getItems().add(itemOs);
+        serviceOrder.getItemOsList().add(itemOs);
 
-        String formattedValue = String.format("R$ %.2f", value);
-        String formattedDiscount = String.format("R$ %.2f", discount);
-
-        lbGivenPoints.setText(String.valueOf(points));
-        lbServiceSubtotal.setText(formattedValue);
-        lbServiceDiscount.setText(formattedDiscount);
-        lbServiceTotal.setText(formattedValue);
+        updateTotalsUI();
 
         cbServicesChosen.getSelectionModel().clearSelection();
     }
@@ -342,12 +329,15 @@ public class ServiceOrderController implements Initializable {
     @FXML
     protected void onHandleRemoveService(ActionEvent event) {
         ItemOsModel itemOs = tableViewItems.getSelectionModel().getSelectedItem();
-        ServiceOrderModel serviceOrder = new ServiceOrderModel();
+        ServiceModel serviceRemoved = itemOs.getService();
 
-        itemOs.setService(itemOs.getService());
+        value -= serviceRemoved.getServicePrice();
+        points -= serviceRemoved.getGivenPoints();
 
         tableViewItems.getItems().remove(itemOs);
         serviceOrder.getItemOsList().remove(itemOs);
+
+        updateTotalsUI();
 
         tableViewItems.getSelectionModel().clearSelection();
     }
@@ -358,13 +348,8 @@ public class ServiceOrderController implements Initializable {
         serviceDAO.setConnection(connection);
         itemOsDAO.setConnection(connection);
 
-
-        lbGivenPoints.setText(String.valueOf(points));
-        lbServiceSubtotal.setText(formattedValue);
-        lbServiceDiscount.setText(formattedDiscount);
-        lbServiceTotal.setText(formattedValue);
-
         loadTableItems();
+        updateTotalsUI();
 
         tableViewItems.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(tableViewItems.getSelectionModel().isEmpty()) {
