@@ -312,34 +312,39 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     protected void onHandleAddService(ActionEvent event) {
-        ItemOsModel itemOs = new ItemOsModel();
-
         ServiceModel serviceAdded = cbServicesChosen.getSelectionModel().getSelectedItem();
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
-        itemOs.setService(serviceAdded);
+        for(ItemOsModel itemOs: itemOsDAO.getAllItemOs()) {
+            value += itemOs.getServicePrice();
+            points += itemOs.getServiceGivenPoints();
 
-        serviceOrder.setOrderDate(LocalDate.now());
-        serviceOrder.getItemOsList().add(itemOs);
+            itemOs.setService(serviceAdded);
 
-        System.out.println("Adicionado");
+            tableViewItems.getItems().add(itemOs);
+            serviceOrder.getItemOsList().add(itemOs);
+        }
+
+        String formattedValue = String.format("R$ %.2f", value);
+        String formattedDiscount = String.format("R$ %.2f", discount);
+
+        lbGivenPoints.setText(String.valueOf(points));
+        lbServiceSubtotal.setText(formattedValue);
+        lbServiceDiscount.setText(formattedDiscount);
+        lbServiceTotal.setText(formattedValue);
 
         cbServicesChosen.getSelectionModel().clearSelection();
     }
 
     @FXML
     protected void onHandleRemoveService(ActionEvent event) {
-        ItemOsModel itemOs = new ItemOsModel();
+        ItemOsModel itemOs = tableViewItems.getSelectionModel().getSelectedItem();
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
-        ServiceModel serviceRemoved = cbServicesChosen.getSelectionModel().getSelectedItem();
+        itemOs.setService(itemOs.getService());
 
-        itemOs.setService(serviceRemoved);
-
-        serviceOrder.setOrderDate(LocalDate.now());
+        tableViewItems.getItems().remove(itemOs);
         serviceOrder.getItemOsList().remove(itemOs);
-
-        System.out.println("Removido");
     }
 
     @Override
@@ -349,20 +354,6 @@ public class ServiceOrderController implements Initializable {
         itemOsDAO.setConnection(connection);
 
         loadTableItems();
-
-        for(ItemOsModel itemOs: itemOsDAO.getAllItemOs()) {
-            value += itemOs.getServiceValue();
-
-            String formattedValue = String.format("R$ %.2f", value);
-            String formattedDiscount = String.format("R$ %.2f", discount);
-
-            points += itemOs.getServiceGivenPoints();
-
-            lbGivenPoints.setText(String.valueOf(points));
-            lbServiceSubtotal.setText(formattedValue);
-            lbServiceDiscount.setText(formattedDiscount);
-            lbServiceTotal.setText(formattedValue);
-        }
 
         tableViewItems.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             btRemoveService.setVisible(true);
