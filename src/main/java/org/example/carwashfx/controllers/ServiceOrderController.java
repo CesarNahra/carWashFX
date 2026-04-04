@@ -345,6 +345,8 @@ public class ServiceOrderController implements Initializable {
 
         tableViewItems.getItems().remove(itemOs);
         serviceOrder.getItemOsList().remove(itemOs);
+
+        tableViewItems.getSelectionModel().clearSelection();
     }
 
     @Override
@@ -356,7 +358,11 @@ public class ServiceOrderController implements Initializable {
         loadTableItems();
 
         tableViewItems.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            btRemoveService.setVisible(true);
+            if(tableViewItems.getSelectionModel().isEmpty()) {
+                btRemoveService.setVisible(false);
+            } else {
+                btRemoveService.setVisible(true);
+            }
         });
 
         serviceList = serviceDAO.getAllServices();
