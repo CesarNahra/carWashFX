@@ -173,6 +173,9 @@ public class ServiceOrderController implements Initializable {
     private double discount = 0;
     private double multa = 0;
 
+    String formattedValue = String.format("R$ %.2f", value);
+    String formattedDiscount = String.format("R$ %.2f", discount);
+
 
     public void loadVehicleData(VehicleModel vehicle) {
         tfVehiclePlate.setText(vehicle.getVehiclePlate());
@@ -354,6 +357,12 @@ public class ServiceOrderController implements Initializable {
         serviceOrderDAO.setConnection(connection);
         serviceDAO.setConnection(connection);
         itemOsDAO.setConnection(connection);
+
+
+        lbGivenPoints.setText(String.valueOf(points));
+        lbServiceSubtotal.setText(formattedValue);
+        lbServiceDiscount.setText(formattedDiscount);
+        lbServiceTotal.setText(formattedValue);
 
         loadTableItems();
 
