@@ -165,13 +165,14 @@ public class ServiceOrderController implements Initializable {
 
     private double value = 0;
     private int points = 0;
-    private double discount = 0;
-    private double multa = 0;
+    private double pointsDiscount = 0;
+    private double discount = 0.3;
+    private double multa = 0.1;
 
     private void updateTotalsUI() {
         lbGivenPoints.setText(String.valueOf(points));
         lbServiceSubtotal.setText(String.format("R$ %.2f", value));
-        lbServiceDiscount.setText(String.format("R$ %.2f", discount));
+        lbServiceDiscount.setText(String.format("- R$ %.2f", pointsDiscount));
         lbServiceTotal.setText(String.format("R$ %.2f", value));
     }
 
@@ -192,7 +193,7 @@ public class ServiceOrderController implements Initializable {
         checkBoxClientScore.setText(String.format("Usar %d pontos?", vehicle.getClient().getScore().getQuantity()));
 
         if(checkBoxClientScore.isSelected()) {
-            discount = pointsConverter(vehicle.getClient());
+            pointsDiscount = pointsConverter(vehicle.getClient());
         }
     }
 
@@ -325,10 +326,13 @@ public class ServiceOrderController implements Initializable {
         ServiceModel serviceAdded = cbServicesChosen.getSelectionModel().getSelectedItem();
         ItemOsModel itemOs = new ItemOsModel();
 
+        itemOs.setServiceValue(serviceAdded.getServicePrice() - (serviceAdded.getServicePrice() * discount));
+        itemOs.setObservations(String.format("%.1f%% de desconto", discount * 100.0));
+
         itemOs.setService(serviceAdded);
 
-        value += serviceAdded.getServicePrice();
-        points += serviceAdded.getGivenPoints();
+        value += itemOs.getServiceValue();
+        points += itemOs.getServiceGivenPoints();
 
         tableViewItems.getItems().add(itemOs);
         serviceOrder.getItemOsList().add(itemOs);
@@ -341,10 +345,9 @@ public class ServiceOrderController implements Initializable {
     @FXML
     protected void onHandleRemoveService(ActionEvent event) {
         ItemOsModel itemOs = tableViewItems.getSelectionModel().getSelectedItem();
-        ServiceModel serviceRemoved = itemOs.getService();
 
-        value -= serviceRemoved.getServicePrice();
-        points -= serviceRemoved.getGivenPoints();
+        value -= itemOs.getServicePrice();
+        points -= itemOs.getServiceGivenPoints();
 
         tableViewItems.getItems().remove(itemOs);
         serviceOrder.getItemOsList().remove(itemOs);
