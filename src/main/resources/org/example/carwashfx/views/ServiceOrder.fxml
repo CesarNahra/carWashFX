@@ -132,6 +132,7 @@
             </CheckBox>
             <Button fx:id="btAddService" mnemonicParsing="false" onAction="#onHandleAddService" text="Adicionar Serviço" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Button fx:id="btRemoveService" mnemonicParsing="false" onAction="#onHandleRemoveService" text="Remover Serviço" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label fx:id="lbPoints" GridPane.columnIndex="6" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <GridPane layoutX="112.0" layoutY="625.0">

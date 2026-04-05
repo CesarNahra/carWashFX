@@ -3,6 +3,7 @@ package org.example.carwashfx.models.domain;
 import org.example.carwashfx.controllers.exceptions.ExceptionWash;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,6 +124,22 @@ public class ServiceOrderModel {
     public void removeItemOs(ItemOsModel itemOs) {
         itemOsList.remove(itemOs);
         itemOs.setServiceOrder(null);
+    }
+
+    public String getServiceOrderData() {
+        StringBuilder sb = new StringBuilder();
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        sb.append("Nº Ordem Serviço: ").append(getOrderNumber()).append("\n");
+        sb.append("Data da Ordem: ").append(formatDate.format(getOrderDate())).append("\n");
+        sb.append("Valor Total: ").append(String.format("R$ %.2f", getTotalValue())).append("\n");
+        sb.append("Desconto: ").append(String.format("R$ %.2f ", getOrderDiscount())).append("\n");
+//        sb.append("Veículo: ").append(getVehicle().getVehicleData()).append("\n");
+//        sb.append("Cliente: ").append(getVehicle().getClient().getData()).append("\n");
+        sb.append("Itens: ").append(getItemOsList()).append("\n");
+        sb.append("Status: ").append(getOrderStatus()).append("\n");
+
+        return sb.toString();
     }
 }
 

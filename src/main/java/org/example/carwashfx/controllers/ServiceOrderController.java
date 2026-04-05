@@ -55,6 +55,9 @@ public class ServiceOrderController implements Initializable {
     private Label lbVehicleGasType;
 
     @FXML
+    private Label lbPoints;
+
+    @FXML
     private Label lbSubtotal;
 
     @FXML
@@ -172,6 +175,10 @@ public class ServiceOrderController implements Initializable {
         lbServiceTotal.setText(String.format("R$ %.2f", value));
     }
 
+    public double pointsConverter(ClientModel client) {
+        return client.getScore().getQuantity() * 0.01;
+    }
+
     public void loadVehicleData(VehicleModel vehicle) {
         tfVehiclePlate.setText(vehicle.getVehiclePlate());
         tfVehicleOwner.setText(vehicle.getClient().getClientName());
@@ -182,6 +189,11 @@ public class ServiceOrderController implements Initializable {
         tfVehicleGasType.setText(vehicle.getModel().getEngine().getGasType().toString());
         tfVehicleEngine.setText(String.valueOf(vehicle.getModel().getEngine().getEnginePower()));
         tfVehicleColor.setText(vehicle.getColor().getColorName());
+        checkBoxClientScore.setText(String.format("Usar %d pontos?", vehicle.getClient().getScore().getQuantity()));
+
+        if(checkBoxClientScore.isSelected()) {
+            discount = pointsConverter(vehicle.getClient());
+        }
     }
 
     public void loadTableItems() {
@@ -275,7 +287,7 @@ public class ServiceOrderController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmação de serviço no veículo");
             alert.setHeaderText(null);
-            alert.setContentText("hkhlkçlkj");
+            alert.setContentText(serviceOrder.getServiceOrderData());
             alert.showAndWait();
         } else {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

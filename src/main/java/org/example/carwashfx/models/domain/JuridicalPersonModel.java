@@ -32,16 +32,6 @@ public class JuridicalPersonModel extends ClientModel {
         this.stateRegistrationNumber = stateRegistrationNumber;
     }
 
-//    public String getData() {
-//        StringBuilder sb = new StringBuilder();
-//
-//        sb.append(super.getData());
-//        sb.append("CNPJ: ").append(getCnpj()).append("\n");
-//        sb.append("Nº de Registro Estadual: ").append(getStateRegistrationNumber()).append("\n");
-//
-//        return sb.toString();
-//    }
-
     public String getData() {
         StringBuilder sb = new StringBuilder();
 
