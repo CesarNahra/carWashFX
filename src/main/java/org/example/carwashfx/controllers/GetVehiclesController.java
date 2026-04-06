@@ -1,17 +1,12 @@
 package org.example.carwashfx.controllers;
 
 
-import com.mysql.cj.xdevapi.Client;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -19,9 +14,7 @@ import javafx.stage.Stage;
 import org.example.carwashfx.models.dao.VehicleDAO;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
-import org.example.carwashfx.models.domain.ECategory;
-import org.example.carwashfx.models.domain.EGasType;
-import org.example.carwashfx.models.domain.VehicleModel;
+import org.example.carwashfx.models.domain.*;
 import org.example.carwashfx.utils.ViewNavigator;
 
 import java.io.IOException;
