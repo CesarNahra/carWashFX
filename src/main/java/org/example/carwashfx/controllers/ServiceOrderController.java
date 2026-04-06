@@ -23,6 +23,7 @@ import org.example.carwashfx.models.domain.ServiceOrderModel;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -195,6 +196,8 @@ public class ServiceOrderController implements Initializable {
         if(checkBoxClientScore.isSelected()) {
             pointsDiscount = pointsConverter(vehicle.getClient());
         }
+
+        serviceOrder.setVehicle(vehicle);
     }
 
     public void loadTableItems() {
@@ -299,6 +302,7 @@ public class ServiceOrderController implements Initializable {
             ViewNavigator.openView(stage, "GetVehicles.fxml");
         }
 
+        serviceOrder.setOrderDate(LocalDate.now());
         serviceOrder.setOrderStatus(orderSelected);
         printer.printOs(serviceOrder);
 

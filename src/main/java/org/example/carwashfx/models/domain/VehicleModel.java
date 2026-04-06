@@ -97,16 +97,16 @@ public class VehicleModel {
     }
 
     public String getVehicleData() {
-        StringBuilder vehicleData = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-        vehicleData.append("Placa: ").append(getVehiclePlate()).append("\n");
-        vehicleData.append("Proprietário: ").append(getClient().getClientName()).append("\n");
-        vehicleData.append("Observações: ").append(getVehicleObservations()).append("\n");
-        vehicleData.append("Modelo: ").append(getModel().getBrand().getBrandName()).append("\n");
-        vehicleData.append("Motor: ").append(getModel().getEngine().getEnginePower()).append("\n");
-        vehicleData.append("Cor: ").append(getColor().getColorName()).append("\n");
-        vehicleData.append("Categoria: ").append(getModel().getCategory()).append("\n");
+        sb.append("Placa: ").append(getVehiclePlate()).append("\n");
+        sb.append("Proprietário: ").append(getClient().getClientName()).append("\n");
+        sb.append("Observações: ").append(getVehicleObservations()).append("\n");
+        sb.append("Modelo: ").append(getModel().getBrand().getBrandName()).append("\n");
+        sb.append("Motor: ").append(getModel().getEngine().getEnginePower()).append("\n");
+        sb.append("Cor: ").append(getColor().getColorName()).append("\n");
+        sb.append("Categoria: ").append(getModel().getCategory()).append("\n");
 
-        return vehicleData.toString();
+        return sb.toString();
     }
 }

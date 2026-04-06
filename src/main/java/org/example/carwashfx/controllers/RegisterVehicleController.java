@@ -165,14 +165,16 @@ public class RegisterVehicleController implements Initializable {
 
     @FXML
     protected void btRegisterVehicleOnAction(ActionEvent event) {
+        VehicleModel vehicle = new VehicleModel();
+        VehicleModelModel vehicleModel = new VehicleModelModel();
+
         ClientModel client = comboVehicleOwner.getSelectionModel().getSelectedItem();
         ECategory category = cbVehicleCategory.getSelectionModel().getSelectedItem();
         EGasType gasType = cbVehicleGasType.getSelectionModel().getSelectedItem();
 
+        vehicle.setModel(vehicleModel);
         vehicle.getModel().setCategory(category);
         vehicle.getModel().getEngine().setGasType(gasType);
-
-        VehicleModel vehicle = new VehicleModel();
 
         client.addVehicle(vehicle);
         vehicle.setClient(client);
