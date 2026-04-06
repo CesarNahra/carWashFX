@@ -37,15 +37,23 @@ public class ClientDAO {
             stmt.setString(3, client.getClientPhone());
             stmt.setDate(4, java.sql.Date.valueOf(client.getClientRegistrationDate()));
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            int generatedId = 0;
+            if (rs.next()) {
+                generatedId = rs.getInt(1);
+                client.setClientId(generatedId);
+            }
             if(client instanceof NormalPersonModel np) {
                 PreparedStatement stmtNP = connection.prepareStatement(queryNP);
-                stmtNP.setString(1, np.getCpf());
-                stmtNP.setDate(2, java.sql.Date.valueOf(np.getClientBirthDate()));
+                stmtNP.setInt(1, generatedId);
+                stmtNP.setString(2, np.getCpf());
+                stmtNP.setDate(3, java.sql.Date.valueOf(np.getClientBirthDate()));
                 stmtNP.executeUpdate();
             } else {
                 PreparedStatement stmtJP = connection.prepareStatement(queryJP);
-                stmtJP.setString(1, ((JuridicalPersonModel)client).getCnpj());
-                stmtJP.setString(2, ((JuridicalPersonModel)client).getStateRegistrationNumber());
+                stmtJP.setInt(1, generatedId);
+                stmtJP.setString(2, ((JuridicalPersonModel)client).getCnpj());
+                stmtJP.setString(3, ((JuridicalPersonModel)client).getStateRegistrationNumber());
                 stmtJP.executeUpdate();
             }
             return true;

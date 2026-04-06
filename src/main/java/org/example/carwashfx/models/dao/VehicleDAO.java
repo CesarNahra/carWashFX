@@ -30,6 +30,9 @@ public class VehicleDAO {
             stmt.setInt(3, vehicle.getClient().getClientId());
             stmt.setInt(4, vehicle.getModel().getModelId());
             stmt.setInt(5, vehicle.getColor().getColorId());
+            System.out.println("DEBUG IDs -> Cliente: " + vehicle.getClient().getClientId() +
+                    " | Modelo: " + vehicle.getModel().getModelId() +
+                    " | Cor: " + vehicle.getColor().getColorId());
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {

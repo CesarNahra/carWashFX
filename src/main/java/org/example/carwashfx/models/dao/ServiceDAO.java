@@ -30,6 +30,11 @@ public class ServiceDAO {
             stmt.setDouble(2, service.getServicePrice());
             stmt.setInt(3, service.getGivenPoints());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int generatedId = rs.getInt(1);
+                service.setServiceId(generatedId);
+            }
             return true;
         } catch (SQLException e) {
             Logger.getLogger(ServiceDAO.class.getName()).log(Level.SEVERE, null, e);

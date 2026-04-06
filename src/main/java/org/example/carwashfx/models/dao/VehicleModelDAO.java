@@ -3,10 +3,7 @@ package org.example.carwashfx.models.dao;
 import org.example.carwashfx.models.domain.EGasType;
 import org.example.carwashfx.models.domain.VehicleModelModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +29,11 @@ public class VehicleModelDAO {
             stmt.setString(4, vehicleModel.getEngine().getGasType().toString());
             stmt.setString(5, vehicleModel.getCategory().toString());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int generatedId = rs.getInt(1);
+                vehicleModel.setModelId(generatedId);
+            }
             return true;
         } catch (SQLException e) {
             Logger.getLogger(VehicleModelDAO.class.getName()).log(Level.SEVERE, null, e);

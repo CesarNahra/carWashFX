@@ -89,6 +89,7 @@ public abstract class ClientModel {
     public String getData() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append("Dados do Cliente: \n\n");
         sb.append("Nome: ").append(getClientName()).append("\n");
         sb.append("Email: ").append(getClientEmail()).append("\n");
         sb.append("Telefone: ").append(getClientPhone()).append("\n");

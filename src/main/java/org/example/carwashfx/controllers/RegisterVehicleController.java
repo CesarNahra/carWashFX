@@ -9,8 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.example.carwashfx.models.dao.ClientDAO;
-import org.example.carwashfx.models.dao.VehicleDAO;
+import org.example.carwashfx.models.dao.*;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
 import org.example.carwashfx.models.domain.*;
@@ -82,12 +81,12 @@ public class RegisterVehicleController implements Initializable {
     private ECategory[] categories = ECategory.values();
     private EGasType[] gasTypes = EGasType.values();
 
-    ClientModel client;
-    VehicleModel vehicle = new VehicleModel();
-
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.connect();
     private final VehicleDAO vehicleDAO = new VehicleDAO();
+    private final BrandDAO brandDAO = new BrandDAO();
+    private final VehicleModelDAO vehicleModelDAO = new VehicleModelDAO();
+    private final ColorDAO colorDAO = new ColorDAO();
     private final ClientDAO clientDAO = new ClientDAO();
 
     private List<ClientModel> ownerList;
@@ -168,21 +167,24 @@ public class RegisterVehicleController implements Initializable {
     @FXML
     protected void btRegisterVehicleOnAction(ActionEvent event) {
         BrandModel brand = new BrandModel(tfVehicleBrand.getText());
-        VehicleModelModel vehicleModel = new VehicleModelModel();
         ColorModel color = new ColorModel(tfVehicleColor.getText());
 
         ClientModel client = comboVehicleOwner.getSelectionModel().getSelectedItem();
         ECategory category = cbVehicleCategory.getSelectionModel().getSelectedItem();
         EGasType gasType = cbVehicleGasType.getSelectionModel().getSelectedItem();
 
-        vehicleModel.getEngine().setEnginePower(parseInt(tfVehicleEngine.getText()));
+        brandDAO.insertBrand(brand);
+        colorDAO.insertColor(color);
+
+        VehicleModelModel vehicleModel = new VehicleModelModel();
         vehicleModel.setBrand(brand);
+        vehicleModel.setCategory(category);
+        vehicleModel.getEngine().setEnginePower(Integer.parseInt(tfVehicleEngine.getText()));
+        vehicleModel.getEngine().setGasType(gasType);
+
+        vehicleModelDAO.insertVehicleModel(vehicleModel);
 
         VehicleModel vehicle = new VehicleModel(tfVehiclePlate.getText(), taVehicleObservations.getText(), client, vehicleModel, color);
-
-        vehicle.getModel().setCategory(category);
-        vehicle.getModel().getEngine().setGasType(gasType);
-        System.out.println(vehicle.getVehicleData());
 
         client.addVehicle(vehicle);
 
@@ -191,7 +193,7 @@ public class RegisterVehicleController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(vehicle.getVehicleData());
         alert.showAndWait();
-        
+
         vehicleDAO.insertVehicle(vehicle);
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -215,6 +217,9 @@ public class RegisterVehicleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        brandDAO.setConnection(connection);
+        colorDAO.setConnection(connection);
+        vehicleModelDAO.setConnection(connection);
         vehicleDAO.setConnection(connection);
         clientDAO.setConnection(connection);
 

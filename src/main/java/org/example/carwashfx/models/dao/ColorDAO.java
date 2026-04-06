@@ -26,6 +26,11 @@ public class ColorDAO {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, color.getColorName());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int generatedId = rs.getInt(1);
+                color.setColorId(generatedId);
+            }
             return true;
         } catch (SQLException e) {
             Logger.getLogger(ColorDAO.class.getName()).log(Level.SEVERE, null, e);

@@ -26,6 +26,11 @@ public class BrandDAO {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, brand.getBrandName());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int generatedId = rs.getInt(1);
+                brand.setBrandId(generatedId);
+            }
             return true;
         } catch (SQLException e) {
             Logger.getLogger(BrandDAO.class.getName()).log(Level.SEVERE, null, e);
