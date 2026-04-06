@@ -3,10 +3,7 @@ package org.example.carwashfx.models.dao;
 import javafx.scene.paint.Color;
 import org.example.carwashfx.models.domain.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +24,7 @@ public class VehicleDAO {
         String query = "INSERT INTO vehicle (vehicle_plate, vehicle_observations, client_id, vehicle_model_id, vehicle_color_id) VALUES (?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, vehicle.getVehiclePlate());
             stmt.setString(2, vehicle.getVehicleObservations());
             stmt.setInt(3, vehicle.getClient().getClientId());

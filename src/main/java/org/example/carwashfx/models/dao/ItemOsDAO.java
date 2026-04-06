@@ -5,10 +5,7 @@ import org.example.carwashfx.models.domain.ItemOsModel;
 import org.example.carwashfx.models.domain.ServiceModel;
 import org.example.carwashfx.models.domain.ServiceOrderModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,7 +26,7 @@ public class ItemOsDAO {
     public boolean insertItemOs(ItemOsModel itemOs) {
         String query = "INSERT INTO item_os(item_value, item_observations, service_order_number, service_id) VALUES (?, ?, ?, ?)";
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setDouble(1, itemOs.getServiceValue());
             stmt.setString(2, itemOs.getObservations());
             stmt.setInt(3, itemOs.getServiceOrder().getOrderNumber());

@@ -2,10 +2,7 @@ package org.example.carwashfx.models.dao;
 
 import org.example.carwashfx.models.domain.ServiceOrderModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +25,7 @@ public class ServiceOrderDAO {
         String query = "INSERT INTO service_order (service_order_total_value, service_order_date, service_order_discount, service_order_status, vehicle_id, service_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setDouble(1, serviceOrder.getTotalValue());
             stmt.setDate(2, java.sql.Date.valueOf(serviceOrder.getOrderDate()));
             stmt.setDouble(3, serviceOrder.getDiscountValue());

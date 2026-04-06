@@ -3,10 +3,7 @@ package org.example.carwashfx.models.dao;
 import org.example.carwashfx.models.domain.ECategory;
 import org.example.carwashfx.models.domain.ServiceModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,7 +25,7 @@ public class ServiceDAO {
         String query = "INSERT INTO service (service_description, service_price, service_given_points) VALUES (?, ?, ?)";
 
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, service.getServiceDescription());
             stmt.setDouble(2, service.getServicePrice());
             stmt.setInt(3, service.getGivenPoints());

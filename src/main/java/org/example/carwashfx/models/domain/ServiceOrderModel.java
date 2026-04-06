@@ -20,12 +20,13 @@ public class ServiceOrderModel {
     public ServiceOrderModel() {
     }
 
-    public ServiceOrderModel(int orderNumber, double totalValue, LocalDate orderDate, double orderDiscount, int serviceId, String serviceDescription, double servicePrice, int givenPoints) {
+    public ServiceOrderModel(int orderNumber, double totalValue, LocalDate orderDate, double orderDiscount, VehicleModel vehicle, ServiceModel service) {
         this.orderNumber = orderNumber;
         this.totalValue = totalValue;
         this.orderDate = orderDate;
         this.orderDiscount = orderDiscount;
-        this.service = new ServiceModel(serviceId, serviceDescription, servicePrice, givenPoints);
+        this.vehicle = vehicle;
+        this.service = service;
     }
 
     public int getOrderNumber() {
@@ -130,12 +131,13 @@ public class ServiceOrderModel {
         StringBuilder sb = new StringBuilder();
         DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+        sb.append("Dados da Ordem de Serviço: \n\n");
         sb.append("Nº Ordem Serviço: ").append(getOrderNumber()).append("\n");
         sb.append("Data da Ordem: ").append(formatDate.format(getOrderDate())).append("\n");
         sb.append("Valor Total: ").append(String.format("R$ %.2f", getTotalValue())).append("\n");
         sb.append("Desconto: ").append(String.format("R$ %.2f ", getOrderDiscount())).append("\n");
-        sb.append("Veículo: ").append(getVehicle().getVehicleData()).append("\n");
-        sb.append("Cliente: ").append(getVehicle().getClient().getData()).append("\n");
+//        sb.append("Veículo: ").append(getVehicle().getVehicleData()).append("\n");
+//        sb.append("Cliente: ").append(getVehicle().getClient().getData()).append("\n");
         sb.append("Itens: ").append(getItemOsList()).append("\n");
         sb.append("Status: ").append(getOrderStatus()).append("\n");
 

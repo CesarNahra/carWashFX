@@ -11,6 +11,14 @@ public class VehicleModel {
     public VehicleModel() {
     }
 
+    public VehicleModel(String vehiclePlate, String vehicleObservations, ClientModel client, VehicleModelModel model, ColorModel color) {
+        this.vehiclePlate = vehiclePlate;
+        this.vehicleObservations = vehicleObservations;
+        this.client = client;
+        this.model = model;
+        this.color = color;
+    }
+
     public VehicleModel(String vehiclePlate) {
         this.vehiclePlate = vehiclePlate;
     }
@@ -99,6 +107,7 @@ public class VehicleModel {
     public String getVehicleData() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append("Dados do veículo: \n\n");
         sb.append("Placa: ").append(getVehiclePlate()).append("\n");
         sb.append("Proprietário: ").append(getClient().getClientName()).append("\n");
         sb.append("Observações: ").append(getVehicleObservations()).append("\n");

@@ -162,7 +162,6 @@ public class ServiceOrderController implements Initializable {
     private final ServiceDAO serviceDAO = new ServiceDAO();
     private final ItemOsDAO itemOsDAO = new ItemOsDAO();
 
-    private ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
     private double value = 0;
     private int points = 0;
@@ -182,6 +181,8 @@ public class ServiceOrderController implements Initializable {
     }
 
     public void loadVehicleData(VehicleModel vehicle) {
+        ServiceOrderModel serviceOrder = new ServiceOrderModel();
+
         tfVehiclePlate.setText(vehicle.getVehiclePlate());
         tfVehicleOwner.setText(vehicle.getClient().getClientName());
         taVehicleObservations.setText(vehicle.getVehicleObservations());
@@ -283,6 +284,7 @@ public class ServiceOrderController implements Initializable {
     @FXML
     protected void onHandleConfirmService(ActionEvent event) {
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
+        ItemOsModel itemOs = new ItemOsModel(100.0, "pika");
         PrintingOs printer = new PrintingOs();
 
         EOrderStatus orderSelected = cbServiceOrderStatus.getSelectionModel().getSelectedItem();
@@ -304,6 +306,10 @@ public class ServiceOrderController implements Initializable {
 
         serviceOrder.setOrderDate(LocalDate.now());
         serviceOrder.setOrderStatus(orderSelected);
+        serviceOrder.addItemOs(itemOs);
+        System.out.println(serviceOrder.getItemOsList());
+        System.out.println(serviceOrder.getServiceOrderData());
+
         printer.printOs(serviceOrder);
 
         serviceOrderDAO.insertServiceOrder(serviceOrder);
@@ -327,6 +333,7 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     protected void onHandleAddService(ActionEvent event) {
+        ServiceOrderModel serviceOrder = new ServiceOrderModel();
         ServiceModel serviceAdded = cbServicesChosen.getSelectionModel().getSelectedItem();
         ItemOsModel itemOs = new ItemOsModel();
 
@@ -339,7 +346,7 @@ public class ServiceOrderController implements Initializable {
         points += itemOs.getServiceGivenPoints();
 
         tableViewItems.getItems().add(itemOs);
-        serviceOrder.getItemOsList().add(itemOs);
+        serviceOrder.addItemOs(itemOs);
 
         updateTotalsUI();
 
@@ -348,13 +355,14 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     protected void onHandleRemoveService(ActionEvent event) {
+        ServiceOrderModel serviceOrder = new ServiceOrderModel();
         ItemOsModel itemOs = tableViewItems.getSelectionModel().getSelectedItem();
 
         value -= itemOs.getServicePrice();
         points -= itemOs.getServiceGivenPoints();
 
         tableViewItems.getItems().remove(itemOs);
-        serviceOrder.getItemOsList().remove(itemOs);
+        serviceOrder.removeItemOs(itemOs);
 
         updateTotalsUI();
 

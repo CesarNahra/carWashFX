@@ -27,11 +27,11 @@ public class ClientDAO {
 
     public boolean insertOwner(ClientModel client) {
         String query = "INSERT INTO client (client_name, client_email, client_phone, client_registration_date) VALUES (?, ?, ?, ?)";
-        String queryNP = "INSERT INTO normal_person (client_id, client_cpf, client_birthdate) VALUES ((SELECT max(client_id) FROM client), ?, ?)";
-        String queryJP = "INSERT INTO juridical_person (client_id, client_cnpj, client_state_registration_number) VALUES ((SELECT max(client_id) FROM client), ?, ?)";
+        String queryNP = "INSERT INTO normal_person (client_id, client_cpf, client_birthdate) VALUES (?, ?, ?)";
+        String queryJP = "INSERT INTO juridical_person (client_id, client_cnpj, client_state_registration_number) VALUES (?, ?, ?)";
 
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, client.getClientName());
             stmt.setString(2, client.getClientEmail());
             stmt.setString(3, client.getClientPhone());

@@ -2,10 +2,7 @@ package org.example.carwashfx.models.dao;
 
 import org.example.carwashfx.models.domain.ColorModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,7 +23,7 @@ public class ColorDAO {
     public boolean insertColor (ColorModel color) {
         String query = "INSERT INTO vehicle_color (vehicle_color_name) VALUES (?)";
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, color.getColorName());
             stmt.executeUpdate();
             return true;

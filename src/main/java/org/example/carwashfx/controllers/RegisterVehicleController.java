@@ -21,6 +21,8 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static java.lang.Integer.parseInt;
+
 
 public class RegisterVehicleController implements Initializable {
     @FXML
@@ -165,19 +167,24 @@ public class RegisterVehicleController implements Initializable {
 
     @FXML
     protected void btRegisterVehicleOnAction(ActionEvent event) {
-        VehicleModel vehicle = new VehicleModel();
+        BrandModel brand = new BrandModel(tfVehicleBrand.getText());
         VehicleModelModel vehicleModel = new VehicleModelModel();
+        ColorModel color = new ColorModel(tfVehicleColor.getText());
 
         ClientModel client = comboVehicleOwner.getSelectionModel().getSelectedItem();
         ECategory category = cbVehicleCategory.getSelectionModel().getSelectedItem();
         EGasType gasType = cbVehicleGasType.getSelectionModel().getSelectedItem();
 
-        vehicle.setModel(vehicleModel);
+        vehicleModel.getEngine().setEnginePower(parseInt(tfVehicleEngine.getText()));
+        vehicleModel.setBrand(brand);
+
+        VehicleModel vehicle = new VehicleModel(tfVehiclePlate.getText(), taVehicleObservations.getText(), client, vehicleModel, color);
+
         vehicle.getModel().setCategory(category);
         vehicle.getModel().getEngine().setGasType(gasType);
+        System.out.println(vehicle.getVehicleData());
 
         client.addVehicle(vehicle);
-        vehicle.setClient(client);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação de novo veículo");
