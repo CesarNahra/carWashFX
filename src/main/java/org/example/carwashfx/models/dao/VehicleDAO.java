@@ -72,7 +72,7 @@ public class VehicleDAO {
     }
 
     public List<VehicleModel> getAllVehicles() {
-        String query = "select v.vehicle_plate, v.vehicle_observations, cl.client_name, vm.vehicle_model_description, vm.vehicle_category, vm.vehicle_engine_power, vm.vehicle_engine_gas_type, vb.vehicle_brand_name, vc.vehicle_color_name from vehicle_model vm join vehicle_brand vb on vm.vehicle_brand_id = vb.vehicle_brand_id join vehicle v on v.vehicle_model_id = vm.vehicle_model_id join vehicle_color vc on v.vehicle_color_id = vc.vehicle_color_id join client cl on v.client_id = cl.client_id";
+        String query = "select v.vehicle_id, v.vehicle_plate, v.vehicle_observations, cl.client_id, cl.client_name, vm.vehicle_model_id, vm.vehicle_model_description, vm.vehicle_category, vm.vehicle_engine_power, vm.vehicle_engine_gas_type, vb.vehicle_brand_id, vb.vehicle_brand_name, vc.vehicle_color_id, vc.vehicle_color_name from vehicle_model vm join vehicle_brand vb on vm.vehicle_brand_id = vb.vehicle_brand_id join vehicle v on v.vehicle_model_id = vm.vehicle_model_id join vehicle_color vc on v.vehicle_color_id = vc.vehicle_color_id join client cl on v.client_id = cl.client_id";
         List<VehicleModel> vehicles = new ArrayList<>();
 
         try {
@@ -108,13 +108,16 @@ public class VehicleDAO {
     private VehicleModel populateVehicleList(ResultSet rs) throws SQLException {
         VehicleModel vehicle = new VehicleModel();
 
+        vehicle.setVehicleId(rs.getInt("vehicle_id"));
         vehicle.setVehiclePlate(rs.getString("vehicle_plate"));
         vehicle.setVehicleObservations(rs.getString("vehicle_observations"));
 
         BrandModel brand = new BrandModel();
+        brand.setBrandId(rs.getInt("vehicle_brand_id"));
         brand.setBrandName(rs.getString("vehicle_brand_name"));
 
         VehicleModelModel vehicleModel = new VehicleModelModel();
+        vehicleModel.setModelId(rs.getInt("vehicle_model_id"));
         vehicleModel.setModelDescription(rs.getString("vehicle_model_description"));
         vehicleModel.setCategory(ECategory.valueOf(rs.getString("vehicle_category")));
 
@@ -122,6 +125,7 @@ public class VehicleDAO {
         vehicleModel.getEngine().setGasType(EGasType.valueOf(rs.getString("vehicle_engine_gas_type")));
 
         ColorModel color = new ColorModel();
+        color.setColorId(rs.getInt("vehicle_color_id"));
         color.setColorName(rs.getString("vehicle_color_name"));
 
         vehicleModel.setBrand(brand);
@@ -130,7 +134,11 @@ public class VehicleDAO {
         vehicle.setColor(color);
 
         ClientModel client = new NormalPersonModel();
+
+        client.setClientId(rs.getInt("client_id"));
         client.setClientName(rs.getString("client_name"));
+
+        vehicle.setClient(client);
         client.addVehicle(vehicle);
 
         return vehicle;

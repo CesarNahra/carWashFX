@@ -86,7 +86,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tfVehicleBrand" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="cbVehicleBrand" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <Label fx:id="lbVehicleModel" text="Modelo:" GridPane.rowIndex="2">
                <font>
                   <Font size="16.0" />
@@ -110,7 +110,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tfVehicleColor" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <ChoiceBox fx:id="cbVehicleColor" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <Label fx:id="lbVehicleCategory" layoutX="10.0" layoutY="262.0" text="Categoria:" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <font>
                   <Font size="16.0" />

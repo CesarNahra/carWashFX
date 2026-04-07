@@ -64,7 +64,7 @@ public class ColorDAO {
         }
     }
 
-    public List<ColorModel> getAllBrands() {
+    public List<ColorModel> getAllColors() {
         String query = "SELECT * FROM vehicle_color";
         List<ColorModel> colors = new ArrayList<>();
         try {
@@ -80,7 +80,7 @@ public class ColorDAO {
         return colors;
     }
 
-    public ColorModel findBrandById (ColorModel color) {
+    public ColorModel findColorById (ColorModel color) {
         String query = "SELECT * FROM vehicle_color WHERE vehicle_color_id = ?";
         ColorModel rtColor = new ColorModel();
 

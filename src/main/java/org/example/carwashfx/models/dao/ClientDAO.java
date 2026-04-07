@@ -65,7 +65,7 @@ public class ClientDAO {
 
     public boolean updateOwner(ClientModel client) {
         String query = "UPDATE client SET client_name = ?, client_phone = ?, client_email = ? WHERE client_id = ?";
-        String queryJP = "UPDATE client SET client_state_registration_number = ? WHERE client_id = ?";
+        String queryJP = "UPDATE juridical_person SET client_state_registration_number = ? WHERE client_id = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -102,7 +102,7 @@ public class ClientDAO {
     }
 
     public List<ClientModel> getAllOwners() {
-        String query = "SELECT cl.client_name, cl.client_email, cl.client_phone, cl.client_registration_date, cl.client_score, np.client_cpf, np.client_birthdate, jp.client_cnpj, jp.client_state_registration_number FROM client cl LEFT JOIN normal_person np on np.client_id = cl.client_id LEFT JOIN juridical_person jp on cl.client_id = jp.client_id";
+        String query = "SELECT cl.client_id, cl.client_name, cl.client_email, cl.client_phone, cl.client_registration_date, cl.client_score, np.client_cpf, np.client_birthdate, jp.client_cnpj, jp.client_state_registration_number FROM client cl LEFT JOIN normal_person np on np.client_id = cl.client_id LEFT JOIN juridical_person jp on cl.client_id = jp.client_id";
         List<ClientModel> owners = new ArrayList<>();
 
         try {
@@ -150,6 +150,7 @@ public class ClientDAO {
             client = jp;
         }
 
+        client.setClientId(rs.getInt("client_id"));
         client.setClientName(rs.getString("client_name"));
         client.setClientEmail(rs.getString("client_email"));
         client.setClientPhone(rs.getString("client_phone"));

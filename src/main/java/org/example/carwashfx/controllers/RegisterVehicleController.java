@@ -43,7 +43,7 @@ public class RegisterVehicleController implements Initializable {
     private Label lbVehicleBrand;
 
     @FXML
-    private TextField tfVehicleBrand;
+    private ChoiceBox<BrandModel> cbVehicleBrand;
 
     @FXML
     private Label lbVehicleEngine;
@@ -67,7 +67,7 @@ public class RegisterVehicleController implements Initializable {
     private Label lbVehicleColor;
 
     @FXML
-    private TextField tfVehicleColor;
+    private ChoiceBox<ColorModel> cbVehicleColor;
 
     @FXML
     private Label lbVehicleCategory;
@@ -88,6 +88,12 @@ public class RegisterVehicleController implements Initializable {
     private final VehicleModelDAO vehicleModelDAO = new VehicleModelDAO();
     private final ColorDAO colorDAO = new ColorDAO();
     private final ClientDAO clientDAO = new ClientDAO();
+
+    private List<ColorModel> colorList;
+    private ObservableList<ColorModel> observableColorList;
+
+    private List<BrandModel> brandList;
+    private ObservableList<BrandModel> observableBrandList;
 
     private List<ClientModel> ownerList;
     private ObservableList<ClientModel> observableOwnerList;
@@ -166,18 +172,15 @@ public class RegisterVehicleController implements Initializable {
 
     @FXML
     protected void btRegisterVehicleOnAction(ActionEvent event) {
-        BrandModel brand = new BrandModel(tfVehicleBrand.getText());
-        ColorModel color = new ColorModel(tfVehicleColor.getText());
-
+        BrandModel brand = cbVehicleBrand.getSelectionModel().getSelectedItem();
+        ColorModel color = cbVehicleColor.getSelectionModel().getSelectedItem();
         ClientModel client = comboVehicleOwner.getSelectionModel().getSelectedItem();
         ECategory category = cbVehicleCategory.getSelectionModel().getSelectedItem();
         EGasType gasType = cbVehicleGasType.getSelectionModel().getSelectedItem();
 
-        brandDAO.insertBrand(brand);
-        colorDAO.insertColor(color);
-
         VehicleModelModel vehicleModel = new VehicleModelModel();
         vehicleModel.setBrand(brand);
+        vehicleModel.setModelDescription(tfVehicleModel.getText());
         vehicleModel.setCategory(category);
         vehicleModel.getEngine().setEnginePower(Integer.parseInt(tfVehicleEngine.getText()));
         vehicleModel.getEngine().setGasType(gasType);
@@ -206,10 +209,10 @@ public class RegisterVehicleController implements Initializable {
         tfVehiclePlate.clear();
         comboVehicleOwner.getSelectionModel().clearSelection();
         taVehicleObservations.clear();
-        tfVehicleBrand.clear();
+        cbVehicleBrand.getSelectionModel().clearSelection();
         tfVehicleModel.clear();
         tfVehicleEngine.clear();
-        tfVehicleColor.clear();
+        cbVehicleColor.getSelectionModel().clearSelection();
         cbVehicleCategory.getSelectionModel().clearSelection();
         cbVehicleGasType.getSelectionModel().clearSelection();
         tfVehiclePlate.requestFocus();
@@ -222,6 +225,16 @@ public class RegisterVehicleController implements Initializable {
         vehicleModelDAO.setConnection(connection);
         vehicleDAO.setConnection(connection);
         clientDAO.setConnection(connection);
+
+        colorList = colorDAO.getAllColors();
+        observableColorList = FXCollections.observableArrayList(colorList);
+
+        cbVehicleColor.setItems(observableColorList);
+
+        brandList = brandDAO.getAllBrands();
+        observableBrandList = FXCollections.observableArrayList(brandList);
+
+        cbVehicleBrand.setItems(observableBrandList);
 
         loadClientData();
         comboVehicleOwner.setItems(observableOwnerList);
