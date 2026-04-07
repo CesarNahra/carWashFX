@@ -284,7 +284,6 @@ public class ServiceOrderController implements Initializable {
     @FXML
     protected void onHandleConfirmService(ActionEvent event) {
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
-        ItemOsModel itemOs = new ItemOsModel(100.0, "pika");
         PrintingOs printer = new PrintingOs();
 
         EOrderStatus orderSelected = cbServiceOrderStatus.getSelectionModel().getSelectedItem();
@@ -305,9 +304,8 @@ public class ServiceOrderController implements Initializable {
         }
 
         serviceOrder.setOrderDate(LocalDate.now());
+        serviceOrder.getItemOsList().addAll(observableItemOsList);
         serviceOrder.setOrderStatus(orderSelected);
-        serviceOrder.addItemOs(itemOs);
-        System.out.println(serviceOrder.getItemOsList());
         System.out.println(serviceOrder.getServiceOrderData());
 
         printer.printOs(serviceOrder);
@@ -347,6 +345,7 @@ public class ServiceOrderController implements Initializable {
 
         tableViewItems.getItems().add(itemOs);
         serviceOrder.addItemOs(itemOs);
+        serviceOrder.getItemOsList().add(itemOs);
 
         updateTotalsUI();
 
@@ -358,11 +357,12 @@ public class ServiceOrderController implements Initializable {
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
         ItemOsModel itemOs = tableViewItems.getSelectionModel().getSelectedItem();
 
-        value -= itemOs.getServicePrice();
+        value -= itemOs.getServiceValue();
         points -= itemOs.getServiceGivenPoints();
 
         tableViewItems.getItems().remove(itemOs);
         serviceOrder.removeItemOs(itemOs);
+        serviceOrder.getItemOsList().remove(itemOs);
 
         updateTotalsUI();
 

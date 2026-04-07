@@ -137,7 +137,11 @@ public class ServiceOrderModel {
         sb.append("Desconto: ").append(String.format("R$ %.2f ", getOrderDiscount())).append("\n");
 //        sb.append("Veículo: ").append(getVehicle().getVehicleData()).append("\n");
 //        sb.append("Cliente: ").append(getVehicle().getClient().getData()).append("\n");
-        sb.append("Itens: ").append(getItemOsList()).append("\n");
+        sb.append("Itens: ").append("\n");
+        for(ItemOsModel item : getItemOsList()) {
+            sb.append(item.getServiceDescription()).append("\t\t\t\t\t");
+            sb.append(item.getServiceValue()).append("\t\t\n");
+        }
         sb.append("Status: ").append(getOrderStatus()).append("\n");
 
         return sb.toString();
