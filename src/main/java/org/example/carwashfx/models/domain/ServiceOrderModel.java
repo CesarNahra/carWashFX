@@ -20,8 +20,7 @@ public class ServiceOrderModel {
     public ServiceOrderModel() {
     }
 
-    public ServiceOrderModel(int orderNumber, double totalValue, LocalDate orderDate, double orderDiscount, VehicleModel vehicle, ServiceModel service) {
-        this.orderNumber = orderNumber;
+    public ServiceOrderModel(double totalValue, LocalDate orderDate, double orderDiscount, VehicleModel vehicle, ServiceModel service) {
         this.totalValue = totalValue;
         this.orderDate = orderDate;
         this.orderDiscount = orderDiscount;

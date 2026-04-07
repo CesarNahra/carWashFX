@@ -111,7 +111,7 @@ public class ServiceOrderDAO {
     public ServiceOrderModel populateServiceOrderList(ResultSet rs) throws SQLException {
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
-        serviceOrder.setOrderNumber(Integer.parseInt(rs.getString("service_order_number")));
+        serviceOrder.setOrderNumber(rs.getInt("service_order_number"));
         serviceOrder.setOrderDiscount(rs.getDouble("service_order_discount"));
         return serviceOrder;
     }

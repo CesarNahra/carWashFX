@@ -132,22 +132,24 @@ public class GetOwnersController implements Initializable {
     private final ClientDAO clientDAO = new ClientDAO();
 
     public void selectTableOwnersItem(ClientModel client) {
-        tfClientName.setText(client.getClientName());
-        tfClientEmail.setText(client.getClientEmail());
-        tfClientPhone.setText(client.getClientPhone());
-        dpClientRegistrationDate.setValue(client.getClientRegistrationDate());
-        tfClientScore.setText(String.valueOf(client.getScore().getQuantity()));
+        if(client != null) {
+            tfClientName.setText(client.getClientName());
+            tfClientEmail.setText(client.getClientEmail());
+            tfClientPhone.setText(client.getClientPhone());
+            dpClientRegistrationDate.setValue(client.getClientRegistrationDate());
+            tfClientScore.setText(String.valueOf(client.getScore().getQuantity()));
 
-        if (client instanceof NormalPersonModel) {
-            tfClientCPF.setText(((NormalPersonModel)client).getCpf());
-            dpClientBirthDate.setValue(((NormalPersonModel)client).getClientBirthDate());
-            tfClientCNPJ.clear();
-            tfClientRegistrationNumber.clear();
-        } else {
-            tfClientCNPJ.setText(((JuridicalPersonModel) client).getCnpj());
-            tfClientRegistrationNumber.setText(((JuridicalPersonModel)client).getStateRegistrationNumber());
-            tfClientCPF.clear();
-            dpClientBirthDate.setValue(null);
+            if (client instanceof NormalPersonModel) {
+                tfClientCPF.setText(((NormalPersonModel)client).getCpf());
+                dpClientBirthDate.setValue(((NormalPersonModel)client).getClientBirthDate());
+                tfClientCNPJ.clear();
+                tfClientRegistrationNumber.clear();
+            } else {
+                tfClientCNPJ.setText(((JuridicalPersonModel) client).getCnpj());
+                tfClientRegistrationNumber.setText(((JuridicalPersonModel)client).getStateRegistrationNumber());
+                tfClientCPF.clear();
+                dpClientBirthDate.setValue(null);
+            }
         }
     }
 
