@@ -162,6 +162,8 @@ public class ServiceOrderController implements Initializable {
     private final ServiceDAO serviceDAO = new ServiceDAO();
     private final ItemOsDAO itemOsDAO = new ItemOsDAO();
 
+    private ServiceOrderModel serviceOrder = new ServiceOrderModel();
+
 
     private double value = 0;
     private int points = 0;
@@ -170,35 +172,33 @@ public class ServiceOrderController implements Initializable {
     private double multa = 0.1;
 
     private void updateTotalsUI() {
-        lbGivenPoints.setText(String.valueOf(points));
-        lbServiceSubtotal.setText(String.format("R$ %.2f", value));
-        lbServiceDiscount.setText(String.format("- R$ %.2f", pointsDiscount));
-        lbServiceTotal.setText(String.format("R$ %.2f", value));
-    }
+        double totalValue = serviceOrder.calculateServiceTotal();
+        int totalPoints = serviceOrder.calculateTotalPoints();
+        double totalWithDiscount = serviceOrder.calculateTotalWithDiscount();
 
-    public double pointsConverter(ClientModel client) {
-        return client.getScore().getQuantity() * 0.01;
+        lbGivenPoints.setText(String.valueOf(totalPoints));
+        lbServiceSubtotal.setText(String.format("R$ %.2f", totalValue));
+        lbServiceDiscount.setText(String.format("- R$ %.2f", totalWithDiscount));
+        lbServiceTotal.setText(String.format("R$ %.2f", totalValue));
     }
 
     public void loadVehicleData(VehicleModel vehicle) {
         ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
-        tfVehiclePlate.setText(vehicle.getVehiclePlate());
-        tfVehicleOwner.setText(vehicle.getClient().getClientName());
-        taVehicleObservations.setText(vehicle.getVehicleObservations());
-        tfVehicleBrand.setText(vehicle.getModel().getBrand().getBrandName());
-        tfVehicleModel.setText(vehicle.getModel().getModelDescription());
-        tfVehicleCategory.setText(vehicle.getModel().getCategory().toString());
-        tfVehicleGasType.setText(vehicle.getModel().getEngine().getGasType().toString());
-        tfVehicleEngine.setText(String.valueOf(vehicle.getModel().getEngine().getEnginePower()));
-        tfVehicleColor.setText(vehicle.getColor().getColorName());
-        checkBoxClientScore.setText(String.format("Usar %d pontos?", vehicle.getClient().getScore().getQuantity()));
+        if(vehicle != null) {
+            tfVehiclePlate.setText(vehicle.getVehiclePlate());
+            tfVehicleOwner.setText(vehicle.getClient().getClientName());
+            taVehicleObservations.setText(vehicle.getVehicleObservations());
+            tfVehicleBrand.setText(vehicle.getModel().getBrand().getBrandName());
+            tfVehicleModel.setText(vehicle.getModel().getModelDescription());
+            tfVehicleCategory.setText(vehicle.getModel().getCategory().toString());
+            tfVehicleGasType.setText(vehicle.getModel().getEngine().getGasType().toString());
+            tfVehicleEngine.setText(String.valueOf(vehicle.getModel().getEngine().getEnginePower()));
+            tfVehicleColor.setText(vehicle.getColor().getColorName());
+            checkBoxClientScore.setText(String.format("Usar %d pontos?", vehicle.getClient().getScore().getQuantity()));
 
-        if(checkBoxClientScore.isSelected()) {
-            pointsDiscount = pointsConverter(vehicle.getClient());
+            this.serviceOrder.setVehicle(vehicle);
         }
-
-        serviceOrder.setVehicle(vehicle);
     }
 
     public void loadTableItems() {
@@ -283,7 +283,6 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     protected void onHandleConfirmService(ActionEvent event) {
-        ServiceOrderModel serviceOrder = new ServiceOrderModel();
         PrintingOs printer = new PrintingOs();
 
         EOrderStatus orderSelected = cbServiceOrderStatus.getSelectionModel().getSelectedItem();
@@ -302,11 +301,6 @@ public class ServiceOrderController implements Initializable {
 
             ViewNavigator.openView(stage, "GetVehicles.fxml");
         }
-
-        serviceOrder.setOrderDate(LocalDate.now());
-        serviceOrder.getItemOsList().addAll(observableItemOsList);
-        serviceOrder.setOrderStatus(orderSelected);
-        System.out.println(serviceOrder.getServiceOrderData());
 
         printer.printOs(serviceOrder);
 
@@ -331,21 +325,18 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     protected void onHandleAddService(ActionEvent event) {
-        ServiceOrderModel serviceOrder = new ServiceOrderModel();
         ServiceModel serviceAdded = cbServicesChosen.getSelectionModel().getSelectedItem();
         ItemOsModel itemOs = new ItemOsModel();
 
-        itemOs.setServiceValue(serviceAdded.getServicePrice() - (serviceAdded.getServicePrice() * discount));
+        double finalValue = serviceAdded.getServicePrice() - (serviceAdded.getServicePrice() * discount);
+
+        itemOs.setServiceValue(finalValue);
         itemOs.setObservations(String.format("%.1f%% de desconto", discount * 100.0));
 
         itemOs.setService(serviceAdded);
 
-        value += itemOs.getServiceValue();
-        points += itemOs.getServiceGivenPoints();
-
         tableViewItems.getItems().add(itemOs);
         serviceOrder.addItemOs(itemOs);
-        serviceOrder.getItemOsList().add(itemOs);
 
         updateTotalsUI();
 
@@ -354,15 +345,10 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     protected void onHandleRemoveService(ActionEvent event) {
-        ServiceOrderModel serviceOrder = new ServiceOrderModel();
         ItemOsModel itemOs = tableViewItems.getSelectionModel().getSelectedItem();
-
-        value -= itemOs.getServiceValue();
-        points -= itemOs.getServiceGivenPoints();
 
         tableViewItems.getItems().remove(itemOs);
         serviceOrder.removeItemOs(itemOs);
-        serviceOrder.getItemOsList().remove(itemOs);
 
         updateTotalsUI();
 
@@ -376,7 +362,6 @@ public class ServiceOrderController implements Initializable {
         itemOsDAO.setConnection(connection);
 
         loadTableItems();
-        updateTotalsUI();
 
         tableViewItems.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(tableViewItems.getSelectionModel().isEmpty()) {
@@ -415,12 +400,6 @@ public class ServiceOrderController implements Initializable {
                 btCancelService.setDisable(true);
                 btCancelService.setVisible(false);
                 btAddService.setDisable(true);
-
-                lbServiceSubtotal.setText(String.valueOf(multa));
-                lbServiceDiscount.setText(String.valueOf(discount));
-                lbServiceTotal.setText(String.valueOf(multa));
-
-                lbGivenPoints.setText(String.valueOf(points));
             } else {
                 cbServicesChosen.setDisable(false);
                 checkBoxClientScore.setDisable(false);

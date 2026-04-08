@@ -89,8 +89,8 @@ public class VehicleDAO {
     }
 
     public VehicleModel findVehicleById(VehicleModel vehicle) {
-        String query = "SELECT * FROM vehicle WHERE vehicle_id = ?";
-        VehicleModel rtVehicle = new VehicleModel();
+        String query = "SELECT v.vehicle_id, v.vehicle_plate, v.vehicle_observations, cl.client_id, cl.client_name, vm.vehicle_model_id, vm.vehicle_model_description, vm.vehicle_category, vm.vehicle_engine_power, vm.vehicle_engine_gas_type, vb.vehicle_brand_id, vb.vehicle_brand_name, vc.vehicle_color_id, vc.vehicle_color_name from vehicle_model vm join vehicle_brand vb on vm.vehicle_brand_id = vb.vehicle_brand_id join vehicle v on v.vehicle_model_id = vm.vehicle_model_id join vehicle_color vc on v.vehicle_color_id = vc.vehicle_color_id join client cl on v.client_id = cl.client_id WHERE vehicle_id = ?";
+        VehicleModel rtVehicle = null;
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);

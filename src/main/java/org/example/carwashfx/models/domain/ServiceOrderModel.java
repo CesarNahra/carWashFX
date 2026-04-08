@@ -94,21 +94,22 @@ public class ServiceOrderModel {
         return totalValue;
     }
 
-    public double calculateServiceDiscount() throws ExceptionWash {
-        double total = calculateServiceTotal();
-
-        if (itemOsList.isEmpty()) {
-            throw new ExceptionWash("Não há serviços na lista para serem calculados");
-        }
-
-        double discountValue = total * (orderDiscount / 100.0);
-
-        return total - discountValue;
+    public int calculateTotalPoints(){
+        return itemOsList.stream().mapToInt(ItemOsModel::getServiceGivenPoints).sum();
     }
 
-    public double getDiscountValue() throws ExceptionWash {
+    public double calculateTotalWithDiscount() throws  ExceptionWash {
+
         double total = calculateServiceTotal();
-        return total * (orderDiscount / 100.0);
+        double discount = getDiscountValue();
+
+        return total - discount;
+    }
+
+    public double getDiscountValue() throws ExceptionWash{
+        int points = vehicle.getClient().getScore().getQuantity();
+
+        return points * 0.01;
     }
 
 
@@ -134,13 +135,15 @@ public class ServiceOrderModel {
         sb.append("Nº Ordem Serviço: ").append(getOrderNumber()).append("\n");
         sb.append("Data da Ordem: ").append(formatDate.format(getOrderDate())).append("\n");
         sb.append("Valor Total: ").append(String.format("R$ %.2f", getTotalValue())).append("\n");
-        sb.append("Desconto: ").append(String.format("R$ %.2f ", getOrderDiscount())).append("\n");
-//        sb.append("Veículo: ").append(getVehicle().getVehicleData()).append("\n");
-//        sb.append("Cliente: ").append(getVehicle().getClient().getData()).append("\n");
-        sb.append("Itens: ").append("\n");
+        sb.append("Desconto: ").append(String.format("R$ %.2f ", getDiscountValue())).append("\n");
+        sb.append("Valor Final: ").append(String.format("R$ %.2f ", calculateTotalWithDiscount())).append("\n\n");
+        sb.append(getVehicle().getVehicleData()).append("\n\n");
+        sb.append(getVehicle().getClient().getData()).append("\n\n");
+        sb.append("Itens: ").append("\n\n");
         for(ItemOsModel item : getItemOsList()) {
+            sb.append(item.getServiceId()).append("\t\t\t\t\t");
             sb.append(item.getServiceDescription()).append("\t\t\t\t\t");
-            sb.append(item.getServiceValue()).append("\t\t\n");
+            sb.append(item.getServiceValue()).append("\t\t\n\n");
         }
         sb.append("Status: ").append(getOrderStatus()).append("\n");
 

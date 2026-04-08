@@ -14,25 +14,25 @@ public class PrintingOs {
         DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
             sb.append("========================================================================").append("\n");
-            sb.append("Order Number: ").append(serviceOrder.getOrderNumber()).append("\t\t");
-            sb.append("Service Date: ").append(formatDate.format(serviceOrder.getOrderDate())).append("\t\t");
-            sb.append("Order Status: ").append(serviceOrder.getOrderStatus()).append("\t\t\n");
-            sb.append("Client Name: ").append(serviceOrder.getVehicle().getClient().getClientName()).append("\t\t\n");
-            sb.append("Vehicle Plate: ").append(serviceOrder.getVehicle().getVehiclePlate()).append("\t\t");
-            sb.append("Vehicle Model: ").append(serviceOrder.getVehicle().getModel().getModelDescription()).append("/").append(serviceOrder.getVehicle().getModel().getBrand().getBrandName()).append("/").append(serviceOrder.getVehicle().getModel().getCategory()).append("\t\t\n");
-            sb.append("========================================================================").append("\n");
-            sb.append("ITENS\t\t\t\t\tDESCRIPTION\t\t\t\t\tPRICE\t\n");
-            sb.append("========================================================================").append("\n");
-            int i = 0;
+            sb.append("Nº da Ordem de Serviço: ").append(serviceOrder.getOrderNumber()).append("\t\t");
+            sb.append("Data da Ordem: ").append(formatDate.format(serviceOrder.getOrderDate())).append("\t\t");
+            sb.append("Status da Ordem: ").append(serviceOrder.getOrderStatus()).append("\t\t\n");
+            sb.append("Nome do Cliente: ").append(serviceOrder.getVehicle().getClient().getClientName()).append("\t\t\n");
+            sb.append("Placa do Veículo: ").append(serviceOrder.getVehicle().getVehiclePlate()).append("\t\t");
+            sb.append("Modelo do Veículo: ").append(serviceOrder.getVehicle().getModel().getModelDescription()).append("/").append(serviceOrder.getVehicle().getModel().getBrand().getBrandName()).append("/").append(serviceOrder.getVehicle().getModel().getCategory()).append("\t\t\n");
+            sb.append("===========================================================================").append("\n");
+            sb.append("ITENS\t\t\t\t\tDESCRIÇÃO\t\t\t\t\t\t\tPREÇO\t\n");
+            sb.append("===========================================================================").append("\n");
             for(ItemOsModel item : serviceOrder.getItemOsList()) {
-                sb.append(++i).append("\t\t\t\t\t").append(item.getObservations()).append("\t\t\t\t\t");
+                sb.append(item.getServiceId()).append("\t\t\t\t\t");
+                sb.append(item.getServiceDescription()).append("\t\t\t\t\t");
                 sb.append(item.getServiceValue()).append("\t\t\n");
             }
-            sb.append("========================================================================").append("\n");
-            sb.append("SUBTOTAL").append("\t\t\t\t\t\t\t\t\t\t\t").append(serviceOrder.calculateServiceTotal()).append("\n");
-            sb.append("DISCOUNT").append("\t").append("(").append(serviceOrder.getOrderDiscount()).append("%").append(")").append("\t\t\t\t\t\t\t\t\t").append(serviceOrder.getDiscountValue()).append("\n");
-            sb.append("========================================================================").append("\n");
-            sb.append("TOTAL").append("\t\t\t\t\t\t\t\t\t\t\t\t").append(serviceOrder.calculateServiceDiscount()).append("\n");
+            sb.append("===========================================================================").append("\n");
+            sb.append("SUBTOTAL").append("\t\t\t\t\t\t\t\t\t\t\t\t\t").append(serviceOrder.calculateServiceTotal()).append("\n");
+            sb.append("DESCONTO").append("\t").append("(").append(serviceOrder.getDiscountValue()).append(")").append("\t\t\t\t\t\t\t\t\t\t\t").append(serviceOrder.getDiscountValue()).append("\n");
+            sb.append("===========================================================================").append("\n");
+            sb.append("TOTAL").append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t").append(serviceOrder.calculateTotalWithDiscount()).append("\n");
         } catch (ExceptionWash e) {
             throw new ExceptionWash("Erro ao gerar relatório: " + e.getMessage());
         }

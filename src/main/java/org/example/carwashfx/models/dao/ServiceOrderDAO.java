@@ -1,6 +1,8 @@
 package org.example.carwashfx.models.dao;
 
+import org.example.carwashfx.models.domain.EOrderStatus;
 import org.example.carwashfx.models.domain.ServiceOrderModel;
+import org.example.carwashfx.models.domain.VehicleModel;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -113,6 +115,21 @@ public class ServiceOrderDAO {
 
         serviceOrder.setOrderNumber(rs.getInt("service_order_number"));
         serviceOrder.setOrderDiscount(rs.getDouble("service_order_discount"));
+        serviceOrder.setTotalValue(rs.getDouble("service_order_total_value"));
+        serviceOrder.setOrderDate(rs.getDate("service_order_date").toLocalDate());
+        serviceOrder.setOrderStatus(EOrderStatus.valueOf(rs.getString("service_order_status")));
+
+        // VEHICLE
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        vehicleDAO.setConnection(connection);
+
+        VehicleModel vehicle = new VehicleModel();
+        vehicle.setVehicleId(rs.getInt("vehicle_id"));
+
+        vehicle = vehicleDAO.findVehicleById(vehicle);
+
+        serviceOrder.setVehicle(vehicle);
+
         return serviceOrder;
     }
 }
