@@ -23,7 +23,6 @@ import org.example.carwashfx.models.domain.ServiceOrderModel;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -174,17 +173,16 @@ public class ServiceOrderController implements Initializable {
     private void updateTotalsUI() {
         double totalValue = serviceOrder.calculateServiceTotal();
         int totalPoints = serviceOrder.calculateTotalPoints();
+        double totalDiscounted = serviceOrder.getDiscountValue();
         double totalWithDiscount = serviceOrder.calculateTotalWithDiscount();
 
         lbGivenPoints.setText(String.valueOf(totalPoints));
         lbServiceSubtotal.setText(String.format("R$ %.2f", totalValue));
-        lbServiceDiscount.setText(String.format("- R$ %.2f", totalWithDiscount));
-        lbServiceTotal.setText(String.format("R$ %.2f", totalValue));
+        lbServiceDiscount.setText(String.format("- R$ %.2f", totalDiscounted));
+        lbServiceTotal.setText(String.format("R$ %.2f", totalWithDiscount));
     }
 
     public void loadVehicleData(VehicleModel vehicle) {
-        ServiceOrderModel serviceOrder = new ServiceOrderModel();
-
         if(vehicle != null) {
             tfVehiclePlate.setText(vehicle.getVehiclePlate());
             tfVehicleOwner.setText(vehicle.getClient().getClientName());
@@ -285,8 +283,6 @@ public class ServiceOrderController implements Initializable {
     protected void onHandleConfirmService(ActionEvent event) {
         PrintingOs printer = new PrintingOs();
 
-        EOrderStatus orderSelected = cbServiceOrderStatus.getSelectionModel().getSelectedItem();
-
         if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.OPENED) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmação de serviço no veículo");
@@ -303,6 +299,9 @@ public class ServiceOrderController implements Initializable {
         }
 
         printer.printOs(serviceOrder);
+
+        serviceOrder.getVehicle().getClient().getScore().addQuantity(serviceOrder.calculateTotalPoints());
+        System.out.println("Nova pontuação do cliente: " +  serviceOrder.getVehicle().getClient().getScore().getQuantity());
 
         serviceOrderDAO.insertServiceOrder(serviceOrder);
     }
@@ -329,6 +328,8 @@ public class ServiceOrderController implements Initializable {
         ItemOsModel itemOs = new ItemOsModel();
 
         double finalValue = serviceAdded.getServicePrice() - (serviceAdded.getServicePrice() * discount);
+
+        finalValue = Math.round(finalValue * 100.0) / 100.0;
 
         itemOs.setServiceValue(finalValue);
         itemOs.setObservations(String.format("%.1f%% de desconto", discount * 100.0));
@@ -361,7 +362,22 @@ public class ServiceOrderController implements Initializable {
         serviceDAO.setConnection(connection);
         itemOsDAO.setConnection(connection);
 
+        lbServiceTotal.setText("R$ 0,00");
+        lbServiceDiscount.setText("R$ 0,00");
+        lbServiceSubtotal.setText("R$ 0,00");
+
         loadTableItems();
+
+        checkBoxClientScore.selectedProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue) {
+                serviceOrder.setUseClientPoints(true);
+                lbServiceDiscount.setText(String.format("%.2f", serviceOrder.getDiscountValue()));
+            } else {
+                serviceOrder.setUseClientPoints(false);
+            }
+            updateTotalsUI();
+        });
+
 
         tableViewItems.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(tableViewItems.getSelectionModel().isEmpty()) {

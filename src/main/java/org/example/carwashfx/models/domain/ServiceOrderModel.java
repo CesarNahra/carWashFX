@@ -17,6 +17,8 @@ public class ServiceOrderModel {
     private EOrderStatus orderStatus = EOrderStatus.OPENED;
     private final List<ItemOsModel> itemOsList = new ArrayList<>();
 
+    private boolean useClientPoints;
+
     public ServiceOrderModel() {
     }
 
@@ -80,6 +82,10 @@ public class ServiceOrderModel {
         this.orderStatus = orderStatus;
     }
 
+    public void setUseClientPoints(boolean useClientPoints) {
+        this.useClientPoints = useClientPoints;
+    }
+
     public double calculateServiceTotal() throws ExceptionWash {
         totalValue = 0;
 
@@ -107,6 +113,10 @@ public class ServiceOrderModel {
     }
 
     public double getDiscountValue() throws ExceptionWash{
+        if(!useClientPoints) {
+            return 0;
+        }
+
         int points = vehicle.getClient().getScore().getQuantity();
 
         return points * 0.01;
