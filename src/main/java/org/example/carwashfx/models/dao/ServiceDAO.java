@@ -90,6 +90,23 @@ public class ServiceDAO {
         return services;
     }
 
+    public List<ServiceModel> getServicesByCategory(ECategory category) {
+        List<ServiceModel> services = new ArrayList<>();
+        String query = "SELECT * FROM service WHERE vehicle_category_service = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, category.name());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ServiceModel service = populateServiceList(rs);
+                services.add(service);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ServiceDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return services;
+    }
+
     public ServiceModel getServiceById(ServiceModel service) {
         String query = "SELECT * FROM service WHERE service_id = ?";
         ServiceModel rtService = null;

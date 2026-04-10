@@ -87,6 +87,20 @@ public class ClientDAO {
         }
     }
 
+    public boolean updateClientScore(ClientModel client) {
+        String sql = "UPDATE client SET client_score = ? WHERE client_id = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, client.getScore().getQuantity());
+            stmt.setInt(2, client.getClientId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+    }
+
     public boolean deleteOwner(ClientModel client) {
         String query = "DELETE FROM client WHERE client_id = ?";
 

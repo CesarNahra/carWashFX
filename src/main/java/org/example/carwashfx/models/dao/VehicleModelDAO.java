@@ -30,8 +30,8 @@ public class VehicleModelDAO {
             stmt.setString(1, vehicleModel.getModelDescription());
             stmt.setInt(2, vehicleModel.getBrand().getBrandId());
             stmt.setInt(3, vehicleModel.getEngine().getEnginePower());
-            stmt.setString(4, vehicleModel.getEngine().getGasType().toString());
-            stmt.setString(5, vehicleModel.getCategory().toString());
+            stmt.setString(4, vehicleModel.getEngine().getGasType().name());
+            stmt.setString(5, vehicleModel.getCategory().name());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {

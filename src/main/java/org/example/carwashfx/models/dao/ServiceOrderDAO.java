@@ -1,8 +1,6 @@
 package org.example.carwashfx.models.dao;
 
-import org.example.carwashfx.models.domain.EOrderStatus;
-import org.example.carwashfx.models.domain.ServiceOrderModel;
-import org.example.carwashfx.models.domain.VehicleModel;
+import org.example.carwashfx.models.domain.*;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -31,7 +29,7 @@ public class ServiceOrderDAO {
             stmt.setDouble(1, serviceOrder.getTotalValue());
             stmt.setDate(2, java.sql.Date.valueOf(serviceOrder.getOrderDate()));
             stmt.setDouble(3, serviceOrder.getDiscountValue());
-            stmt.setString(4, serviceOrder.getOrderStatus().toString());
+            stmt.setString(4, serviceOrder.getOrderStatus().name());
             stmt.setInt(5, serviceOrder.getVehicle().getVehicleId());
             stmt.setInt(6, serviceOrder.getService().getServiceId());
             ResultSet rs = stmt.getGeneratedKeys();
@@ -53,6 +51,20 @@ public class ServiceOrderDAO {
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, serviceOrder.getService().getServiceId());
+            stmt.setInt(2, serviceOrder.getOrderNumber());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger.getLogger(ServiceOrderDAO.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+    }
+
+    public boolean updateServiceOrderStatus(ServiceOrderModel serviceOrder) {
+        String sql = "UPDATE service_order SET service_order_status = ? WHERE service_order_number = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, serviceOrder.getOrderStatus().name());
             stmt.setInt(2, serviceOrder.getOrderNumber());
             stmt.executeUpdate();
             return true;
@@ -119,7 +131,6 @@ public class ServiceOrderDAO {
         serviceOrder.setOrderDate(rs.getDate("service_order_date").toLocalDate());
         serviceOrder.setOrderStatus(EOrderStatus.valueOf(rs.getString("service_order_status")));
 
-        // VEHICLE
         VehicleDAO vehicleDAO = new VehicleDAO();
         vehicleDAO.setConnection(connection);
 

@@ -1,6 +1,7 @@
 package org.example.carwashfx.controllers;
 
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.example.carwashfx.models.dao.ServiceOrderDAO;
 import org.example.carwashfx.models.dao.VehicleDAO;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
@@ -79,6 +81,9 @@ public class GetVehiclesController implements Initializable {
     private TableColumn<VehicleModel, String> tcVehicleColor;
 
     @FXML
+    private TableColumn<ServiceOrderModel, EOrderStatus> tcOrderStatus;
+
+    @FXML
     private TextField tfVehiclePlate;
 
     @FXML
@@ -129,6 +134,7 @@ public class GetVehiclesController implements Initializable {
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.connect();
     private final VehicleDAO vehicleDAO = new VehicleDAO();
+    private final ServiceOrderDAO serviceOrderDAO = new ServiceOrderDAO();
 
 
     public void loadTableVehicleList() {
@@ -141,6 +147,10 @@ public class GetVehiclesController implements Initializable {
         tcVehicleEngine.setCellValueFactory(new PropertyValueFactory<>("vehicleEnginePower"));
         tcVehicleGasType.setCellValueFactory(new PropertyValueFactory<>("vehicleGasType"));
         tcVehicleColor.setCellValueFactory(new PropertyValueFactory<>("vehicleColor"));
+//        tcOrderStatus.setCellValueFactory(cellData -> {
+//            VehicleModel vehicle = cellData.getValue();
+//            return new SimpleObjectProperty<>(vehicle.get);
+//        });
 
 
         vehicleList = vehicleDAO.getAllVehicles();
@@ -342,6 +352,7 @@ public class GetVehiclesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vehicleDAO.setConnection(connection);
+//        serviceOrderDAO.setConnection(connection);
 
         loadTableVehicleList();
 

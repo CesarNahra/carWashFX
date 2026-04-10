@@ -57,7 +57,6 @@ public class PrintingOs {
         } catch (ExceptionWash e) {
             throw new ExceptionWash("Erro ao gerar relatório: " + e.getMessage());
         }
-
         System.out.println(sb.toString());
     }
 }

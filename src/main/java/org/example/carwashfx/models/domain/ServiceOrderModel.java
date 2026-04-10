@@ -87,29 +87,20 @@ public class ServiceOrderModel {
     }
 
     public double calculateServiceTotal() throws ExceptionWash {
-        totalValue = 0;
-
-        if (itemOsList.isEmpty()) {
-            throw new ExceptionWash("Não há serviços na lista para serem calculados");
+        if(itemOsList == null){
+            throw new ExceptionWash("Lista de serviços não inicializada");
         }
 
-        for (ItemOsModel item : itemOsList) {
-            totalValue += item.getServiceValue();
-        }
-
-        return totalValue;
+        return itemOsList.stream().mapToDouble(ItemOsModel::getServiceValue).sum();
     }
 
     public int calculateTotalPoints(){
         return itemOsList.stream().mapToInt(ItemOsModel::getServiceGivenPoints).sum();
     }
 
-    public double calculateTotalWithDiscount() throws  ExceptionWash {
-
-        double total = calculateServiceTotal();
-        double discount = getDiscountValue();
-
-        return total - discount;
+    public double calculateTotalWithDiscount() {
+        double total = calculateServiceTotal() - getDiscountValue();
+        return Math.max(total, 0);
     }
 
     public double getDiscountValue() throws ExceptionWash{

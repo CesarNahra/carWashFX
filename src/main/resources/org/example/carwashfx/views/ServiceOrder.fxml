@@ -88,7 +88,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tfVehicleBrand" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfVehicleBrand" disable="true" editable="false" layoutX="163.0" layoutY="29.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lbVehicleModel" layoutX="10.0" layoutY="117.0" text="Modelo:" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
                   <Font size="16.0" />
@@ -106,7 +106,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tfVehicleColor" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="tfVehicleColor" disable="true" editable="false" layoutX="163.0" layoutY="93.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lbServiceChosen" layoutX="10.0" layoutY="191.0" text="Serviço:" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <font>
                   <Font size="16.0" />
@@ -118,7 +118,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tfVehicleCategory" disable="true" editable="false" layoutX="773.0" layoutY="118.0" prefHeight="23.0" prefWidth="125.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <TextField fx:id="tfVehicleCategory" disable="true" editable="false" layoutX="163.0" layoutY="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
             <Label fx:id="lbVehicleGasType" layoutX="621.0" layoutY="153.0" text="Combustível:" GridPane.rowIndex="3">
                <font>
                   <Font size="16.0" />

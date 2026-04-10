@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.example.carwashfx.models.dao.ClientDAO;
 import org.example.carwashfx.models.dao.ItemOsDAO;
 import org.example.carwashfx.models.dao.ServiceDAO;
 import org.example.carwashfx.models.dao.ServiceOrderDAO;
@@ -160,13 +161,10 @@ public class ServiceOrderController implements Initializable {
     private final ServiceOrderDAO serviceOrderDAO = new ServiceOrderDAO();
     private final ServiceDAO serviceDAO = new ServiceDAO();
     private final ItemOsDAO itemOsDAO = new ItemOsDAO();
+    private final ClientDAO clientDAO = new ClientDAO();
 
     private ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
-
-    private double value = 0;
-    private int points = 0;
-    private double pointsDiscount = 0;
     private double discount = 0.3;
     private double multa = 0.1;
 
@@ -289,6 +287,23 @@ public class ServiceOrderController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText(serviceOrder.getServiceOrderData());
             alert.showAndWait();
+
+            printer.printOs(serviceOrder);
+
+            ScoreModel score = serviceOrder.getVehicle().getClient().getScore();
+
+            if(checkBoxClientScore.isSelected()) {
+                score.subQuantity(score.getQuantity());
+                score.addQuantity(serviceOrder.calculateTotalPoints());
+            } else {
+                score.addQuantity(serviceOrder.calculateTotalPoints());
+            }
+
+            clientDAO.updateClientScore(serviceOrder.getVehicle().getClient());
+
+            serviceOrderDAO.updateServiceOrderStatus(serviceOrder);
+
+            serviceOrderDAO.insertServiceOrder(serviceOrder);
         } else {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
@@ -297,11 +312,6 @@ public class ServiceOrderController implements Initializable {
 
             ViewNavigator.openView(stage, "GetVehicles.fxml");
         }
-
-        printer.printOs(serviceOrder);
-
-        serviceOrder.getVehicle().getClient().getScore().addQuantity(serviceOrder.calculateTotalPoints());
-        serviceOrderDAO.insertServiceOrder(serviceOrder);
     }
 
     @FXML
@@ -359,8 +369,10 @@ public class ServiceOrderController implements Initializable {
         serviceOrderDAO.setConnection(connection);
         serviceDAO.setConnection(connection);
         itemOsDAO.setConnection(connection);
+        clientDAO.setConnection(connection);
 
         loadTableItems();
+        updateTotalsUI();
 
         checkBoxClientScore.selectedProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
@@ -380,7 +392,7 @@ public class ServiceOrderController implements Initializable {
             }
         });
 
-        serviceList = serviceDAO.getAllServices();
+        serviceList = serviceDAO.getServicesByCategory(ECategory.valueOf(ECategory.SMALL.toString()));
         observableServiceList = FXCollections.observableArrayList(serviceList);
 
         cbServicesChosen.setItems(observableServiceList);
