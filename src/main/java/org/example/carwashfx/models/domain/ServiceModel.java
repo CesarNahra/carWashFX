@@ -64,6 +64,7 @@ public class ServiceModel {
 
         sb.append("Descrição: ").append(getServiceDescription()).append("\n");
         sb.append("Preço: ").append(getServicePrice()).append("\n");
+        sb.append("Pontos: + ").append(getGivenPoints()).append("\n");
         sb.append("Categoria do Serviço: ").append(getCategory()).append("\n");
         return sb.toString();
     }

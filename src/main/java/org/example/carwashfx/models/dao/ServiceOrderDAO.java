@@ -34,12 +34,12 @@ public class ServiceOrderDAO {
             stmt.setString(4, serviceOrder.getOrderStatus().toString());
             stmt.setInt(5, serviceOrder.getVehicle().getVehicleId());
             stmt.setInt(6, serviceOrder.getService().getServiceId());
-            stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
                 serviceOrder.setOrderNumber(generatedId);
             }
+            stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
             Logger.getLogger(ServiceOrderDAO.class.getName()).log(Level.SEVERE, null, e);

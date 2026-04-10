@@ -96,7 +96,6 @@ public abstract class ClientModel {
         sb.append("Data de Registro: ").append(getClientRegistrationDate()).append("\n");
         sb.append(score.getScoreData()).append("\n");
 
-
         return sb.toString();
     }
 

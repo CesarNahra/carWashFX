@@ -301,8 +301,6 @@ public class ServiceOrderController implements Initializable {
         printer.printOs(serviceOrder);
 
         serviceOrder.getVehicle().getClient().getScore().addQuantity(serviceOrder.calculateTotalPoints());
-        System.out.println("Nova pontuação do cliente: " +  serviceOrder.getVehicle().getClient().getScore().getQuantity());
-
         serviceOrderDAO.insertServiceOrder(serviceOrder);
     }
 
@@ -362,16 +360,11 @@ public class ServiceOrderController implements Initializable {
         serviceDAO.setConnection(connection);
         itemOsDAO.setConnection(connection);
 
-        lbServiceTotal.setText("R$ 0,00");
-        lbServiceDiscount.setText("R$ 0,00");
-        lbServiceSubtotal.setText("R$ 0,00");
-
         loadTableItems();
 
         checkBoxClientScore.selectedProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 serviceOrder.setUseClientPoints(true);
-                lbServiceDiscount.setText(String.format("%.2f", serviceOrder.getDiscountValue()));
             } else {
                 serviceOrder.setUseClientPoints(false);
             }
