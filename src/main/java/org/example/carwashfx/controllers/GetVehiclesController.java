@@ -296,6 +296,7 @@ public class GetVehiclesController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Confirmação de Atualização de Veículo");
         alert.setHeaderText(null);
+        alert.setContentText(vehicle.getVehicleData());
         alert.showAndWait();
         vehicleDAO.updateVehicle(vehicle);
 
