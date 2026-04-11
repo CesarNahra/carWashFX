@@ -81,9 +81,6 @@ public class GetVehiclesController implements Initializable {
     private TableColumn<VehicleModel, String> tcVehicleColor;
 
     @FXML
-    private TableColumn<ServiceOrderModel, EOrderStatus> tcOrderStatus;
-
-    @FXML
     private TextField tfVehiclePlate;
 
     @FXML
@@ -147,11 +144,6 @@ public class GetVehiclesController implements Initializable {
         tcVehicleEngine.setCellValueFactory(new PropertyValueFactory<>("vehicleEnginePower"));
         tcVehicleGasType.setCellValueFactory(new PropertyValueFactory<>("vehicleGasType"));
         tcVehicleColor.setCellValueFactory(new PropertyValueFactory<>("vehicleColor"));
-//        tcOrderStatus.setCellValueFactory(cellData -> {
-//            VehicleModel vehicle = cellData.getValue();
-//            return new SimpleObjectProperty<>(vehicle.get);
-//        });
-
 
         vehicleList = vehicleDAO.getAllVehicles();
 
@@ -166,9 +158,9 @@ public class GetVehiclesController implements Initializable {
             taVehicleObservations.setText(vehicle.getVehicleObservations());
             tfVehicleBrand.setText(vehicle.getModel().getBrand().getBrandName());
             tfVehicleModel.setText(vehicle.getModel().getModelDescription());
-            tfVehicleCategory.setText(vehicle.getModel().getCategory().toString());
+            tfVehicleCategory.setText(vehicle.getModel().getCategory().name());
             tfVehicleEngine.setText(String.valueOf(vehicle.getModel().getEngine().getEnginePower()));
-            tfVehicleGasType.setText(vehicle.getModel().getEngine().getGasType().toString());
+            tfVehicleGasType.setText(vehicle.getModel().getEngine().getGasType().name());
             tfVehicleColor.setText(vehicle.getColor().getColorName());
         }
     }
@@ -352,7 +344,6 @@ public class GetVehiclesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vehicleDAO.setConnection(connection);
-//        serviceOrderDAO.setConnection(connection);
 
         loadTableVehicleList();
 

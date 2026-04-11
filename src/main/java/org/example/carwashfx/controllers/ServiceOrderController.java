@@ -1,15 +1,20 @@
 package org.example.carwashfx.controllers;
 
 
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.example.carwashfx.models.dao.ClientDAO;
 import org.example.carwashfx.models.dao.ItemOsDAO;
 import org.example.carwashfx.models.dao.ServiceDAO;
@@ -22,6 +27,7 @@ import org.example.carwashfx.utils.ViewNavigator;
 import org.example.carwashfx.models.domain.VehicleModel;
 import org.example.carwashfx.models.domain.ServiceOrderModel;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
@@ -187,7 +193,7 @@ public class ServiceOrderController implements Initializable {
             taVehicleObservations.setText(vehicle.getVehicleObservations());
             tfVehicleBrand.setText(vehicle.getModel().getBrand().getBrandName());
             tfVehicleModel.setText(vehicle.getModel().getModelDescription());
-            tfVehicleCategory.setText(vehicle.getModel().getCategory().toString());
+            tfVehicleCategory.setText(vehicle.getModel().getCategory().name());
             tfVehicleGasType.setText(vehicle.getModel().getEngine().getGasType().toString());
             tfVehicleEngine.setText(String.valueOf(vehicle.getModel().getEngine().getEnginePower()));
             tfVehicleColor.setText(vehicle.getColor().getColorName());
@@ -301,9 +307,8 @@ public class ServiceOrderController implements Initializable {
 
             clientDAO.updateClientScore(serviceOrder.getVehicle().getClient());
 
-            serviceOrderDAO.updateServiceOrderStatus(serviceOrder);
-
             serviceOrderDAO.insertServiceOrder(serviceOrder);
+
         } else {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
