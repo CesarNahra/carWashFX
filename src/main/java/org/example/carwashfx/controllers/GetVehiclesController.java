@@ -269,8 +269,6 @@ public class GetVehiclesController implements Initializable {
         if(vehicle != null) {
             tfVehiclePlate.setDisable(false);
             tfVehiclePlate.setEditable(true);
-            tfVehicleOwner.setDisable(false);
-            tfVehicleOwner.setEditable(true);
             taVehicleObservations.setDisable(false);
             taVehicleObservations.setEditable(true);
 
