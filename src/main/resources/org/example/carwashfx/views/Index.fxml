@@ -40,12 +40,12 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <Label layoutX="386.0" layoutY="239.0" text="Bem Vindo ao Car Wash">
+            <Label layoutX="424.0" layoutY="308.0" text="Bem Vindo ao Car Wash">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="326.0" layoutY="284.0" text="O lugar ideal para você lavar o seu automóvel!">
+            <Label layoutX="363.0" layoutY="360.0" text="O lugar ideal para você lavar o seu automóvel!">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
