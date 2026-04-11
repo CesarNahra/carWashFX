@@ -305,16 +305,20 @@ public class GetOwnersController implements Initializable {
     protected void onHandleConfirmUpdateOwner (ActionEvent event) {
         ClientModel client = tableViewOwners.getSelectionModel().getSelectedItem();
 
+        client.setClientName(tfClientName.getText());
+        client.setClientEmail(tfClientEmail.getText());
+        client.setClientPhone(tfClientPhone.getText());
+
+        if(client instanceof JuridicalPersonModel jp){
+            jp.setStateRegistrationNumber(tfClientRegistrationNumber.getText());
+        }
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Confirmação de Atualização de Cliente");
         alert.setHeaderText(null);
-        if(client instanceof NormalPersonModel) {
-            alert.setContentText(client.getData());
-            clientDAO.updateOwner(client);
-        } else {
-            alert.setContentText(client.getData());
-            clientDAO.updateOwner(client);
-        }
+        alert.setContentText(client.getData());
+
+        clientDAO.updateOwner(client);
         alert.showAndWait();
         loadTableViewOwners();
 
@@ -346,6 +350,7 @@ public class GetOwnersController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Você deseja excluir todos os dados deste cliente? Esta exclusão é irreversível");
             alert.showAndWait();
+
             clientDAO.deleteOwner(client);
             loadTableViewOwners();
         } else {

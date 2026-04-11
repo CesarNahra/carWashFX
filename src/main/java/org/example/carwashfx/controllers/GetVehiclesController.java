@@ -291,11 +291,15 @@ public class GetVehiclesController implements Initializable {
     protected void onHandleConfirmUpdateVehicle(ActionEvent event) {
         VehicleModel vehicle = tableViewVehicles.getSelectionModel().getSelectedItem();
 
+        vehicle.setVehiclePlate(tfVehiclePlate.getText());
+        vehicle.setVehicleObservations(taVehicleObservations.getText());
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Confirmação de Atualização de Veículo");
         alert.setHeaderText(null);
         alert.setContentText(vehicle.getVehicleData());
         alert.showAndWait();
+
         vehicleDAO.updateVehicle(vehicle);
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -325,6 +329,7 @@ public class GetVehiclesController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Você deseja excluir todos os dados deste veículo? Esta exclusão é irreversível");
             alert.showAndWait();
+
             vehicleDAO.deleteVehicle(vehicle);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

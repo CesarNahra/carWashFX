@@ -154,10 +154,12 @@ public class RegisterOwnerController implements Initializable {
         if(rbNormalPerson.isSelected()) {
             ClientModel normalPerson = new NormalPersonModel(tfClientName.getText(), tfClientPhone.getText(), tfClientEmail.getText(), dpClientBirthDate.getValue(), tfClientCPF.getText(), dpClientRegistrationDate.getValue());
             alert.setContentText(normalPerson.getData());
+
             clientDAO.insertOwner(normalPerson);
         } else {
             ClientModel juridicalPerson = new JuridicalPersonModel(tfClientName.getText(), tfClientPhone.getText(), tfClientEmail.getText(), dpClientRegistrationDate.getValue(), tfClientRegistrationNumber.getText(), tfClientCNPJ.getText());
             alert.setContentText(juridicalPerson.getData());
+
             clientDAO.insertOwner(juridicalPerson);
         }
         alert.showAndWait();
