@@ -1,6 +1,6 @@
 .root {
     -fx-font-family: Arial;
-    -fx-background-color: #4974AB;
+    -fx-background-color: linear-gradient(to top right, #000, #fff);
 }
 
 .label {

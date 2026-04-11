@@ -307,7 +307,19 @@ public class ServiceOrderController implements Initializable {
 
             clientDAO.updateClientScore(serviceOrder.getVehicle().getClient());
 
-            serviceOrderDAO.insertServiceOrder(serviceOrder);
+//            serviceOrderDAO.insertServiceOrder(serviceOrder);
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+
+            pause.setOnFinished(redirect -> {
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/car.png")));
+                stage.setTitle("Início");
+
+                ViewNavigator.openView(stage, "Index.fxml");
+            });
+            pause.play();
 
         } else {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

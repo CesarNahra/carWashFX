@@ -60,7 +60,7 @@
             <TableColumn fx:id="tcVehicleCategory" prefWidth="55.0" text="Categoria" />
         </columns>
       </TableView>
-      <Pane layoutX="540.0" layoutY="27.0" prefHeight="720.0" prefWidth="540.0">
+      <Pane layoutX="540.0" layoutY="27.0" prefHeight="720.0" prefWidth="540.0" stylesheets="@../../../../styles/init-style.css">
          <children>
             <GridPane layoutX="70.0" layoutY="181.0" prefHeight="359.0" prefWidth="401.0">
               <columnConstraints>

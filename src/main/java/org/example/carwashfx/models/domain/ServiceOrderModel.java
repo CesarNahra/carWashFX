@@ -135,7 +135,7 @@ public class ServiceOrderModel {
         sb.append("Dados da Ordem de Serviço: \n\n");
         sb.append("Nº Ordem Serviço: ").append(getOrderNumber()).append("\n");
         sb.append("Data da Ordem: ").append(formatDate.format(getOrderDate())).append("\n");
-        sb.append("Valor Total: ").append(String.format("R$ %.2f", getTotalValue())).append("\n");
+        sb.append("Valor Total: ").append(String.format("R$ %.2f", calculateServiceTotal())).append("\n");
         sb.append("Desconto: ").append(String.format("R$ %.2f ", getDiscountValue())).append("\n");
         sb.append("Valor Final: ").append(String.format("R$ %.2f ", calculateTotalWithDiscount())).append("\n\n");
         sb.append(getVehicle().getVehicleData()).append("\n\n");

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" stylesheets="@../../../../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.carwashfx.controllers.IndexController">
+<VBox alignment="CENTER" stylesheets="@../../../../styles/init-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.carwashfx.controllers.IndexController">
    <children>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
@@ -40,12 +40,12 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <Label layoutX="424.0" layoutY="308.0" text="Bem Vindo ao Car Wash">
+            <Label layoutX="403.0" layoutY="300.0" text="Bem Vindo ao Car Wash">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="363.0" layoutY="360.0" text="O lugar ideal para você lavar o seu automóvel!">
+            <Label layoutX="342.0" layoutY="360.0" text="O lugar ideal para você lavar o seu automóvel!">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

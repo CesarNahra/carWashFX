@@ -54,6 +54,8 @@ public class PrintingOs {
                     serviceOrder.calculateTotalWithDiscount()
             ));
             sb.append("============================================================\n");
+            sb.append("         OBRIGADO PELA PREFERÊNCIA, VOLTE SEMPRE!\n");
+            sb.append("============================================================\n");
         } catch (ExceptionWash e) {
             throw new ExceptionWash("Erro ao gerar relatório: " + e.getMessage());
         }
