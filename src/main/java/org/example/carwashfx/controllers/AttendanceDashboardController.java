@@ -96,11 +96,11 @@ public class AttendanceDashboardController implements Initializable {
         vehicleDAO.setConnection(connection);
 
         ObservableList<PieChart.Data> pcData = FXCollections.observableArrayList(
-                new PieChart.Data(ECategory.SMALL.name(), 20),
-                new PieChart.Data(ECategory.MEDIUM.name(), 20),
-                new PieChart.Data(ECategory.LARGE.name(), 20),
-                new PieChart.Data(ECategory.MOTORBIKE.name(), 20),
-                new PieChart.Data(ECategory.DEFAULT.name(), 20)
+                new PieChart.Data(ECategory.SMALL.name(), vehicleDAO.countVehiclesByCategory(ECategory.SMALL)),
+                new PieChart.Data(ECategory.MEDIUM.name(), vehicleDAO.countVehiclesByCategory(ECategory.MEDIUM)),
+                new PieChart.Data(ECategory.LARGE.name(), vehicleDAO.countVehiclesByCategory(ECategory.LARGE)),
+                new PieChart.Data(ECategory.MOTORBIKE.name(), vehicleDAO.countVehiclesByCategory(ECategory.MOTORBIKE)),
+                new PieChart.Data(ECategory.DEFAULT.name(), vehicleDAO.countVehiclesByCategory(ECategory.DEFAULT))
         );
 
         pcAttendanceDashboard.setTitle("Atendimentos por tamanho");

@@ -102,6 +102,23 @@ public class VehicleDAO {
         return rtVehicle;
     }
 
+    public int countVehiclesByCategory(ECategory category) {
+        String sql = "SELECT COUNT(*) FROM vehicle v " +
+                "JOIN vehicle_model vm ON v.vehicle_model_id = vm.vehicle_model_id " +
+                "WHERE vm.vehicle_category = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, category.name());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(VehicleDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
+
     private VehicleModel populateVehicleList(ResultSet rs) throws SQLException {
         VehicleModel vehicle = new VehicleModel();
 
