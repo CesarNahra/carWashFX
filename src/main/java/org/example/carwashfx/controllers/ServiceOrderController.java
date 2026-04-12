@@ -1,6 +1,5 @@
 package org.example.carwashfx.controllers;
 
-
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +23,6 @@ import org.example.carwashfx.utils.ViewNavigator;
 import org.example.carwashfx.models.domain.VehicleModel;
 import org.example.carwashfx.models.domain.ServiceOrderModel;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
@@ -56,28 +54,16 @@ public class ServiceOrderController implements Initializable {
     private TableView<ItemOsModel> tableViewItems;
 
     @FXML
-    private Label lbPoints;
-
-    @FXML
-    private Label lbSubtotal;
-
-    @FXML
     private Label lbServiceSubtotal;
-
-    @FXML
-    private Label lbDiscount;
 
     @FXML
     private Label lbServiceDiscount;
 
     @FXML
-    private Label lbTotal;
+    private Label lbServiceTotal;
 
     @FXML
     private Label lbGivenPoints;
-
-    @FXML
-    private Label lbServiceTotal;
 
     @FXML
     private TextField tfVehiclePlate;
@@ -118,6 +104,9 @@ public class ServiceOrderController implements Initializable {
     private CheckBox checkBoxClientScore;
 
     @FXML
+    private Button btConfirmService;
+
+    @FXML
     private Button btCancelService;
 
     @FXML
@@ -142,7 +131,7 @@ public class ServiceOrderController implements Initializable {
     private ServiceOrderModel serviceOrder = new ServiceOrderModel();
 
     private double discount = 0.3;
-    private double multa = 0.1;
+    private double fine = 0.35;
 
     private void updateTotalsUI() {
         double totalValue = serviceOrder.calculateServiceTotal();
@@ -154,6 +143,10 @@ public class ServiceOrderController implements Initializable {
         lbServiceSubtotal.setText(String.format("R$ %.2f", totalValue));
         lbServiceDiscount.setText(String.format("- R$ %.2f", totalDiscounted));
         lbServiceTotal.setText(String.format("R$ %.2f", totalWithDiscount));
+
+        if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.CANCELED) {
+            lbServiceTotal.setText(String.format("R$ %.2f", totalValue * fine));
+        }
     }
 
     public void loadVehicleData(VehicleModel vehicle) {
@@ -276,6 +269,13 @@ public class ServiceOrderController implements Initializable {
             }
 
             clientDAO.updateClientScore(serviceOrder.getVehicle().getClient());
+
+            tableViewItems.setDisable(true);
+            checkBoxClientScore.setDisable(true);
+            cbServicesChosen.setDisable(true);
+            cbServiceOrderStatus.setDisable(true);
+            btCancelService.setDisable(true);
+            btConfirmService.setDisable(true);
 
 //            serviceOrderDAO.insertServiceOrder(serviceOrder);
 
@@ -416,8 +416,8 @@ public class ServiceOrderController implements Initializable {
                 btCancelService.setVisible(true);
                 btAddService.setDisable(false);
                 btRemoveService.setDisable(false);
-                lbTotal.setText("Total: ");
             }
+            updateTotalsUI();
         });
         cbServiceOrderStatus.getSelectionModel().select(EOrderStatus.OPENED);
     }

@@ -148,7 +148,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#onHandleConfirmService" text="Confirmar" GridPane.rowIndex="1" />
+            <Button fx:id="btConfirmService" mnemonicParsing="false" onAction="#onHandleConfirmService" text="Confirmar" GridPane.rowIndex="1" />
             <Button fx:id="btCancelService" mnemonicParsing="false" onAction="#onHandleCancelService" text="Cancelar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Status:" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
