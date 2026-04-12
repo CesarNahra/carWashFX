@@ -13,7 +13,6 @@ public class ServiceOrderModel {
     private LocalDate orderDate = LocalDate.now();
     private double orderDiscount;
     private VehicleModel vehicle;
-    private ServiceModel service;
     private EOrderStatus orderStatus = EOrderStatus.OPENED;
     private final List<ItemOsModel> itemOsList = new ArrayList<>();
 
@@ -22,12 +21,11 @@ public class ServiceOrderModel {
     public ServiceOrderModel() {
     }
 
-    public ServiceOrderModel(double totalValue, LocalDate orderDate, double orderDiscount, VehicleModel vehicle, ServiceModel service) {
+    public ServiceOrderModel(double totalValue, LocalDate orderDate, double orderDiscount, VehicleModel vehicle) {
         this.totalValue = totalValue;
         this.orderDate = orderDate;
         this.orderDiscount = orderDiscount;
         this.vehicle = vehicle;
-        this.service = service;
     }
 
     public int getOrderNumber() {
@@ -68,10 +66,6 @@ public class ServiceOrderModel {
 
     public void setVehicle(VehicleModel vehicle) {
         this.vehicle = vehicle;
-    }
-
-    public ServiceModel getService() {
-        return service;
     }
 
     public EOrderStatus getOrderStatus() {

@@ -277,7 +277,7 @@ public class ServiceOrderController implements Initializable {
             btCancelService.setDisable(true);
             btConfirmService.setDisable(true);
 
-//            serviceOrderDAO.insertServiceOrder(serviceOrder);
+            serviceOrderDAO.insertServiceOrder(serviceOrder);
 
             PauseTransition pause = new PauseTransition(Duration.seconds(2));
 

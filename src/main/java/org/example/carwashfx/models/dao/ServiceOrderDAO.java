@@ -22,36 +22,20 @@ public class ServiceOrderDAO {
     }
 
     public boolean insertServiceOrder(ServiceOrderModel serviceOrder) {
-        String query = "INSERT INTO service_order (service_order_total_value, service_order_date, service_order_discount, service_order_status, vehicle_id, service_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO service_order (service_order_total_value, service_order_date, service_order_discount, service_order_status, vehicle_id) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            stmt.setDouble(1, serviceOrder.getTotalValue());
+            stmt.setDouble(1, serviceOrder.calculateServiceTotal());
             stmt.setDate(2, java.sql.Date.valueOf(serviceOrder.getOrderDate()));
             stmt.setDouble(3, serviceOrder.getDiscountValue());
             stmt.setString(4, serviceOrder.getOrderStatus().name());
             stmt.setInt(5, serviceOrder.getVehicle().getVehicleId());
-            stmt.setInt(6, serviceOrder.getService().getServiceId());
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
                 serviceOrder.setOrderNumber(generatedId);
             }
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            Logger.getLogger(ServiceOrderDAO.class.getName()).log(Level.SEVERE, null, e);
-            return false;
-        }
-    }
-
-    public boolean updateServiceOrder(ServiceOrderModel serviceOrder) {
-        String query = "UPDATE service_order SET service_id = ? WHERE service_order_number = ?";
-
-        try {
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, serviceOrder.getService().getServiceId());
-            stmt.setInt(2, serviceOrder.getOrderNumber());
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
