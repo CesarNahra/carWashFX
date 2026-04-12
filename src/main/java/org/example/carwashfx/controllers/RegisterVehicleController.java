@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.carwashfx.models.dao.*;
@@ -20,63 +19,33 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static java.lang.Integer.parseInt;
-
-
 public class RegisterVehicleController implements Initializable {
     @FXML
-    private Label lbVehiclePlate;
-
-    @FXML
     private TextField tfVehiclePlate;
-
-    @FXML
-    private Label lbVehicleObservations;
-
-    @FXML
-    private TextArea taVehicleObservations;
-
-    @FXML
-    private Label lbVehicleOwner;
-
-    @FXML
-    private Label lbVehicleBrand;
-
-    @FXML
-    private ChoiceBox<BrandModel> cbVehicleBrand;
-
-    @FXML
-    private Label lbVehicleEngine;
 
     @FXML
     private TextField tfVehicleEngine;
 
     @FXML
-    private Label lbVehicleGasType;
+    private TextField tfVehicleModel;
+
+    @FXML
+    private TextArea taVehicleObservations;
+
+    @FXML
+    private ChoiceBox<BrandModel> cbVehicleBrand;
 
     @FXML
     private ChoiceBox<EGasType> cbVehicleGasType;
 
     @FXML
-    private Label lbVehicleModel;
-
-    @FXML
-    private TextField tfVehicleModel;
-
-    @FXML
-    private Label lbVehicleColor;
-
-    @FXML
     private ChoiceBox<ColorModel> cbVehicleColor;
 
     @FXML
-    private Label lbVehicleCategory;
+    private ChoiceBox<ECategory> cbVehicleCategory;
 
     @FXML
     private ComboBox<ClientModel> comboVehicleOwner;
-
-    @FXML
-    private ChoiceBox<ECategory> cbVehicleCategory;
 
     private ECategory[] categories = ECategory.values();
     private EGasType[] gasTypes = EGasType.values();

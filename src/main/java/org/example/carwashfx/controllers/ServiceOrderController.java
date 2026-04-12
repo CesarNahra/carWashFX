@@ -6,10 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -35,31 +32,28 @@ import java.util.ResourceBundle;
 
 public class ServiceOrderController implements Initializable {
     @FXML
-    private Label lbVehiclePlate;
+    private TableColumn<ItemOsModel, Integer> tcServiceId;
 
     @FXML
-    private Label lbClientName;
+    private TableColumn<ItemOsModel, String> tcServiceDescription;
 
     @FXML
-    private Label lbVehicleObservations;
+    private TableColumn<ItemOsModel, Double> tcServicePrice;
 
     @FXML
-    private Label lbVehicleBrand;
+    private TableColumn<ItemOsModel, Integer> tcGivenPoints;
 
     @FXML
-    private Label lbVehicleModel;
+    private TableColumn<ItemOsModel, ECategory> tcVehicleCategoryService;
 
     @FXML
-    private Label lbVehicleEngine;
+    private TableColumn<ItemOsModel, Double> tcItemTotal;
 
     @FXML
-    private Label lbVehicleColor;
+    private TableColumn<ItemOsModel, String> tcItemObservations;
 
     @FXML
-    private Label lbVehicleCategory;
-
-    @FXML
-    private Label lbVehicleGasType;
+    private TableView<ItemOsModel> tableViewItems;
 
     @FXML
     private Label lbPoints;
@@ -92,9 +86,6 @@ public class ServiceOrderController implements Initializable {
     private TextField tfVehicleOwner;
 
     @FXML
-    private TextArea taVehicleObservations;
-
-    @FXML
     private TextField tfVehicleBrand;
 
     @FXML
@@ -113,6 +104,9 @@ public class ServiceOrderController implements Initializable {
     private TextField tfVehicleGasType;
 
     @FXML
+    private TextArea taVehicleObservations;
+
+    @FXML
     private ChoiceBox<ServiceModel> cbServicesChosen;
 
     @FXML
@@ -122,30 +116,6 @@ public class ServiceOrderController implements Initializable {
 
     @FXML
     private CheckBox checkBoxClientScore;
-
-    @FXML
-    private TableColumn<ItemOsModel, Integer> tcServiceId;
-
-    @FXML
-    private TableColumn<ItemOsModel, String> tcServiceDescription;
-
-    @FXML
-    private TableColumn<ItemOsModel, Double> tcServicePrice;
-
-    @FXML
-    private TableColumn<ItemOsModel, Integer> tcGivenPoints;
-
-    @FXML
-    private TableColumn<ItemOsModel, ECategory> tcVehicleCategoryService;
-
-    @FXML
-    private TableColumn<ItemOsModel, Double> tcItemTotal;
-
-    @FXML
-    private TableColumn<ItemOsModel, String> tcItemObservations;
-
-    @FXML
-    private TableView<ItemOsModel> tableViewItems;
 
     @FXML
     private Button btCancelService;

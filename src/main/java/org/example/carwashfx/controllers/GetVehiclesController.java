@@ -1,7 +1,5 @@
 package org.example.carwashfx.controllers;
 
-
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,33 +24,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GetVehiclesController implements Initializable {
-    @FXML
-    private Label lbVehiclePlate;
-
-    @FXML
-    private Label lbVehicleOwner;
-
-    @FXML
-    private Label lbVehicleObservations;
-
-    @FXML
-    private Label lbVehicleBrand;
-
-    @FXML
-    private Label lbVehicleModel;
-
-    @FXML
-    private Label lbVehicleEngine;
-
-    @FXML
-    private Label lbVehicleGasType;
-
-    @FXML
-    private Label lbVehicleColor;
-
-    @FXML
-    private Label lbVehicleCategory;
-
     @FXML
     private TableColumn<VehicleModel, String> tcVehiclePlate;
 
@@ -131,7 +102,6 @@ public class GetVehiclesController implements Initializable {
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.connect();
     private final VehicleDAO vehicleDAO = new VehicleDAO();
-    private final ServiceOrderDAO serviceOrderDAO = new ServiceOrderDAO();
 
 
     public void loadTableVehicleList() {

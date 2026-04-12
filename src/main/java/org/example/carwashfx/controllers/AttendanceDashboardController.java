@@ -13,12 +13,10 @@ import org.example.carwashfx.models.dao.VehicleDAO;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
 import org.example.carwashfx.models.domain.ECategory;
-import org.example.carwashfx.models.domain.VehicleModel;
 import org.example.carwashfx.utils.ViewNavigator;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class AttendanceDashboardController implements Initializable {

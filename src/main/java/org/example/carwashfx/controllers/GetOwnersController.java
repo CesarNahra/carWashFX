@@ -1,6 +1,5 @@
 package org.example.carwashfx.controllers;
 
-import com.mysql.cj.xdevapi.Client;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -28,33 +27,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GetOwnersController implements Initializable {
-    @FXML
-    private Label lbClientName;
-
-    @FXML
-    private Label lbClientPhone;
-
-    @FXML
-    private Label lbClientEmail;
-
-    @FXML
-    private Label lbClientCPF;
-
-    @FXML
-    private Label lbClientCNPJ;
-
-    @FXML
-    private Label lbClientBirthDate;
-
-    @FXML
-    private Label lbClientRegistrationNumber;
-
-    @FXML
-    private Label lbClientRegistrationDate;
-
-    @FXML
-    private Label lbClientScore;
-
     @FXML
     private TableColumn<ClientModel, String> tcClientName;
 

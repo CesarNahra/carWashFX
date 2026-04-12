@@ -6,9 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.example.carwashfx.models.dao.BrandDAO;
 import org.example.carwashfx.models.dao.ClientDAO;
-import org.example.carwashfx.models.dao.ColorDAO;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
 import org.example.carwashfx.models.domain.ClientModel;
@@ -22,49 +20,37 @@ import java.util.ResourceBundle;
 
 public class RegisterOwnerController implements Initializable {
     @FXML
-    private Label lbClientName;
-
-    @FXML
-    private TextField tfClientName;
-
-    @FXML
-    private Label lbClientPhone;
-
-    @FXML
-    private TextField tfClientPhone;
-
-    @FXML
-    private Label lbClientEmail;
-
-    @FXML
-    private TextField tfClientEmail;
-
-    @FXML
     private Label lbClientCPF;
-
-    @FXML
-    private TextField tfClientCPF;
 
     @FXML
     private Label lbClientBirthDate;
 
     @FXML
-    private DatePicker dpClientBirthDate;
-
-    @FXML
     private Label lbClientCNPJ;
-
-    @FXML
-    private TextField tfClientCNPJ;
 
     @FXML
     private Label lbClientRegistrationNumber;
 
     @FXML
+    private TextField tfClientName;
+
+    @FXML
+    private TextField tfClientPhone;
+
+    @FXML
+    private TextField tfClientEmail;
+
+    @FXML
+    private TextField tfClientCPF;
+
+    @FXML
+    private TextField tfClientCNPJ;
+
+    @FXML
     private TextField tfClientRegistrationNumber;
 
     @FXML
-    private Label lbClientRegistrationDate;
+    private DatePicker dpClientBirthDate;
 
     @FXML
     private DatePicker dpClientRegistrationDate;
