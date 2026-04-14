@@ -73,14 +73,21 @@ public class ServiceOrderDAO {
     }
 
     public List<ServiceOrderModel> getAllServiceOrder() {
-        String query = "SELECT * FROM service_order";
+        String query = "SELECT so.service_order_number, so.service_order_discount, so.service_order_total_value, so.service_order_date, so.service_order_status from service_order so";
         List<ServiceOrderModel> serviceOrders = new ArrayList<>();
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                ServiceOrderModel serviceOrder = populateServiceOrderList(rs);
+                ServiceOrderModel serviceOrder = new ServiceOrderModel();
+
+                serviceOrder.setOrderNumber(rs.getInt("service_order_number"));
+                serviceOrder.setOrderDiscount(rs.getDouble("service_order_discount"));
+                serviceOrder.setTotalValue(rs.getDouble("service_order_total_value"));
+                serviceOrder.setOrderDate(rs.getDate("service_order_date").toLocalDate());
+                serviceOrder.setOrderStatus(EOrderStatus.valueOf(rs.getString("service_order_status")));
+
                 serviceOrders.add(serviceOrder);
             }
         } catch (SQLException e) {
