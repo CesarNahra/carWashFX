@@ -287,7 +287,7 @@ public class ServiceOrderController implements Initializable {
                 stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/car.png")));
                 stage.setTitle("Início");
 
-                ViewNavigator.openView(stage, "Index.fxml");
+                ViewNavigator.openView(stage, "GetServiceOrders.fxml");
             });
             pause.play();
 
@@ -379,7 +379,7 @@ public class ServiceOrderController implements Initializable {
             }
         });
 
-        serviceList = serviceDAO.getServicesByCategory(ECategory.MEDIUM);
+        serviceList = serviceDAO.getServicesByCategory(ECategory.LARGE);
         observableServiceList = FXCollections.observableArrayList(serviceList);
 
         cbServicesChosen.setItems(observableServiceList);

@@ -6,9 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -26,6 +24,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GetServiceOrdersController implements Initializable {
+    @FXML
+    private TextField tfTotalValue;
+
+    @FXML
+    private TextField tfOrderDiscount;
+
+    @FXML
+    private TextField tfOrderStatus;
+
+    @FXML
+    private DatePicker dpOrderDate;
+
     @FXML
     private TableColumn<ServiceOrderModel, LocalDate> tcOrderDate;
 
@@ -51,20 +61,23 @@ public class GetServiceOrdersController implements Initializable {
 
     public void loadTableServiceOrderList() {
         tcOrderDate.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
-        tcOrderValue.setCellValueFactory(cellData -> {
-            ServiceOrderModel serviceOrder = cellData.getValue();
-            return new SimpleObjectProperty<>(serviceOrder.calculateServiceTotal());
-        });
-        tcOrderDiscount.setCellValueFactory(cellData -> {
-            ServiceOrderModel serviceOrder = cellData.getValue();
-            return new SimpleObjectProperty<>(serviceOrder.getDiscountValue());
-        });
+        tcOrderValue.setCellValueFactory(new PropertyValueFactory<>("totalValue"));
         tcOrderStatus.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
+        tcOrderDiscount.setCellValueFactory(new PropertyValueFactory<>("orderDiscount"));
 
         serviceOrderList = serviceOrderDAO.getAllServiceOrder();
 
         observableServiceOrderList = FXCollections.observableArrayList(serviceOrderList);
         tableViewServiceOrders.setItems(observableServiceOrderList);
+    }
+
+    public void selectTableViewServiceOrdersItem(ServiceOrderModel serviceOrder) {
+        if (serviceOrder != null) {
+            dpOrderDate.setValue(serviceOrder.getOrderDate());
+            tfTotalValue.setText(String.valueOf(serviceOrder.getTotalValue()));
+            tfOrderDiscount.setText(String.valueOf(serviceOrder.getOrderDiscount()));
+            tfOrderStatus.setText(String.valueOf(serviceOrder.getOrderStatus()));
+        }
     }
 
     @FXML
@@ -83,7 +96,7 @@ public class GetServiceOrdersController implements Initializable {
 
         loadTableServiceOrderList();
 
-//        tableViewServiceOrders.getSelectionModel().selectedItemProperty().addListener(
-//                (observable, oldValue, newValue) -> selectTableViewVehiclesItem(newValue));
+        tableViewServiceOrders.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> selectTableViewServiceOrdersItem(newValue));
     }
 }
