@@ -44,7 +44,7 @@ public class ServiceOrderDAO {
         }
     }
 
-    public boolean updateServiceOrderStatus(ServiceOrderModel serviceOrder) {
+    public boolean updateServiceOrder(ServiceOrderModel serviceOrder) {
         String sql = "UPDATE service_order SET service_order_status = ? WHERE service_order_number = ?";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);

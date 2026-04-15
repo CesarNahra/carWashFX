@@ -52,6 +52,17 @@ public class IndexController {
     }
 
     @FXML
+    protected void onHandleGetServiceOrdersOnAction(ActionEvent event) {
+        Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/add.png")));
+        stage.setTitle("Listagem de Ordens");
+
+        ViewNavigator.openView(stage, "GetServiceOrders.fxml");
+
+    }
+
+    @FXML
     protected void onHandleShowSellDashboard(ActionEvent event) {
         Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
 
@@ -84,5 +95,4 @@ public class IndexController {
         ViewNavigator.openView(stage, "AfterSellDashboard.fxml");
 
     }
-
 }

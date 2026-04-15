@@ -29,6 +29,11 @@
                         <MenuItem mnemonicParsing="false" onAction="#onHandleGetOwnersOnAction" text="Listar Clientes" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Ordens de Serviço">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onHandleGetServiceOrdersOnAction" text="Listar Ordens" />
+                      </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Dashboards">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#onHandleShowSellDashboard" text="Dashboard de Vendas" />

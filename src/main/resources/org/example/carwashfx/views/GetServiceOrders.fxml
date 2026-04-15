@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -24,15 +26,38 @@
               <MenuItem mnemonicParsing="false" onAction="#onHandleHome" text="Voltar" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Veículos">
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleRegisterVehicle" text="Cadastrar Veículo" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleGetVehiclesOnAction" text="Listar Veículos" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Clientes">
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleRegisterOwner" text="Cadastrar Clientes" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleGetOwnersOnAction" text="Listar Clientes" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Dashboards">
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleShowSellDashboard" text="Dashboard de Vendas" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleShowAttendanceDashboard" text="Dashboard de Atendimentos" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#onHandleShowAfterSellDashboard" text="Dashboard de Pós Venda" />
+                </items>
+            </Menu>
         </menus>
       </MenuBar>
       <TableView fx:id="tableViewServiceOrders" layoutY="25.0" prefHeight="720.0" prefWidth="540.0">
         <columns>
-          <TableColumn fx:id="tcOrderDate" prefWidth="75.0" text="Data" />
-          <TableColumn fx:id="tcOrderValue" prefWidth="83.0" text="Valor Total" />
+          <TableColumn fx:id="tcOrderNumber" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="tcOrderDate" prefWidth="83.0" text="Data" />
+            <TableColumn fx:id="tcOrderValue" prefWidth="75.0" text="Valor  Total" />
             <TableColumn fx:id="tcOrderDiscount" prefWidth="75.0" text="Desconto" />
             <TableColumn fx:id="tcOrderStatus" prefWidth="75.0" text="Status" />
-            <TableColumn fx:id="tcVehiclePlate" prefWidth="75.0" text="Placa" />
         </columns>
       </TableView>
       <GridPane layoutX="670.0" layoutY="289.0" prefHeight="167.0" prefWidth="241.0">
@@ -41,40 +66,49 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefWidth="65.0" text="Data: ">
+            <Label layoutX="10.0" layoutY="35.0" prefWidth="65.0" text="Nº: ">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="10.0" layoutY="15.0" text="Valor Total: " GridPane.rowIndex="1">
+            <TextField fx:id="tfOrderNumber" disable="true" layoutX="131.0" layoutY="58.0" GridPane.columnIndex="1" />
+            <Label prefWidth="65.0" text="Data: " GridPane.rowIndex="1">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="10.0" layoutY="45.0" text="Desconto: " GridPane.rowIndex="2">
+            <DatePicker fx:id="dpOrderDate" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label layoutX="10.0" layoutY="15.0" text="Valor Total: " GridPane.rowIndex="2">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label layoutX="10.0" layoutY="75.0" text="Status: " GridPane.rowIndex="3">
+            <TextField fx:id="tfTotalValue" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label layoutX="10.0" layoutY="45.0" text="Desconto: " GridPane.rowIndex="3">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" text="Atualizar Ordem" GridPane.rowIndex="5" />
-            <Button layoutX="10.0" layoutY="134.0" mnemonicParsing="false" text="Excluir Ordem" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <DatePicker fx:id="dpOrderDate" GridPane.columnIndex="1" />
-            <TextField fx:id="tfTotalValue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="tfOrderDiscount" layoutX="131.0" layoutY="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="tfOrderStatus" layoutX="131.0" layoutY="68.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="tfOrderDiscount" disable="true" layoutX="131.0" layoutY="40.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label layoutX="10.0" layoutY="75.0" text="Status: " GridPane.rowIndex="4">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="cbOrderStatus" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="btUpdateServiceOrder" mnemonicParsing="false" onAction="#onHandleUpdateServiceOrder" text="Atualizar Ordem" GridPane.rowIndex="6" />
+            <Button fx:id="btDeleteServiceOrder" layoutX="10.0" layoutY="134.0" mnemonicParsing="false" onAction="#onHandleDeleteServiceOrder" text="Excluir Ordem" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Button fx:id="btConfirmUpdateServiceOrder" mnemonicParsing="false" onAction="#onHandleConfirmUpdateServiceOrder" text="Confirmar" visible="false" GridPane.rowIndex="6" />
+            <Button fx:id="btCancelUpdateServiceOrder" mnemonicParsing="false" onAction="#onHandleCancelUpdateServiceOrder" text="Cancelar" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>
