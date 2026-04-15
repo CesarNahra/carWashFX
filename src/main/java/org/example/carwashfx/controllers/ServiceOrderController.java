@@ -90,15 +90,13 @@ public class ServiceOrderController implements Initializable {
     private TextField tfVehicleGasType;
 
     @FXML
+    private TextField tfOrderStatus;
+
+    @FXML
     private TextArea taVehicleObservations;
 
     @FXML
     private ChoiceBox<ServiceModel> cbServicesChosen;
-
-    @FXML
-    private ChoiceBox<EOrderStatus> cbServiceOrderStatus;
-
-    private EOrderStatus[] orderStatus = EOrderStatus.values();
 
     @FXML
     private CheckBox checkBoxClientScore;
@@ -143,10 +141,6 @@ public class ServiceOrderController implements Initializable {
         lbServiceSubtotal.setText(String.format("R$ %.2f", totalValue));
         lbServiceDiscount.setText(String.format("- R$ %.2f", totalDiscounted));
         lbServiceTotal.setText(String.format("R$ %.2f", totalWithDiscount));
-
-        if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.CANCELED) {
-            lbServiceTotal.setText(String.format("R$ %.2f", totalValue * fine));
-        }
     }
 
     public void loadVehicleData(VehicleModel vehicle) {
@@ -250,55 +244,45 @@ public class ServiceOrderController implements Initializable {
     protected void onHandleConfirmService(ActionEvent event) {
         PrintingOs printer = new PrintingOs();
 
-        if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.OPENED) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmação de serviço no veículo");
-            alert.setHeaderText(null);
-            alert.setContentText(serviceOrder.getServiceOrderData());
-            alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação de serviço no veículo");
+        alert.setHeaderText(null);
+        alert.setContentText(serviceOrder.getServiceOrderData());
+        alert.showAndWait();
 
-            printer.printOs(serviceOrder);
+        printer.printOs(serviceOrder);
 
-            ScoreModel score = serviceOrder.getVehicle().getClient().getScore();
+        ScoreModel score = serviceOrder.getVehicle().getClient().getScore();
 
-            if(checkBoxClientScore.isSelected()) {
-                score.subQuantity(score.getQuantity());
-                score.addQuantity(serviceOrder.calculateTotalPoints());
-            } else {
-                score.addQuantity(serviceOrder.calculateTotalPoints());
-            }
-
-            clientDAO.updateClientScore(serviceOrder.getVehicle().getClient());
-
-            tableViewItems.setDisable(true);
-            checkBoxClientScore.setDisable(true);
-            cbServicesChosen.setDisable(true);
-            cbServiceOrderStatus.setDisable(true);
-            btCancelService.setDisable(true);
-            btConfirmService.setDisable(true);
-
-            serviceOrderDAO.insertServiceOrder(serviceOrder);
-
-            PauseTransition pause = new PauseTransition(Duration.seconds(2));
-
-            pause.setOnFinished(redirect -> {
-                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-
-                stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/car.png")));
-                stage.setTitle("Início");
-
-                ViewNavigator.openView(stage, "GetServiceOrders.fxml");
-            });
-            pause.play();
-
+        if(checkBoxClientScore.isSelected()) {
+            score.subQuantity(score.getQuantity());
+            score.addQuantity(serviceOrder.calculateTotalPoints());
         } else {
+            score.addQuantity(serviceOrder.calculateTotalPoints());
+        }
+
+        clientDAO.updateClientScore(serviceOrder.getVehicle().getClient());
+
+        tableViewItems.setDisable(true);
+        checkBoxClientScore.setDisable(true);
+        cbServicesChosen.setDisable(true);
+        tfOrderStatus.setDisable(true);
+        btCancelService.setDisable(true);
+        btConfirmService.setDisable(true);
+
+        serviceOrderDAO.insertServiceOrder(serviceOrder);
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+
+        pause.setOnFinished(redirect -> {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/edit.png")));
-            stage.setTitle("Listagem de Veículos");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/car.png")));
+            stage.setTitle("Início");
 
-            ViewNavigator.openView(stage, "GetVehicles.fxml");
-        }
+            ViewNavigator.openView(stage, "GetServiceOrders.fxml");
+        });
+        pause.play();
     }
 
     @FXML
@@ -390,35 +374,6 @@ public class ServiceOrderController implements Initializable {
                 btAddService.setVisible(true);
             }
         });
-
-        cbServiceOrderStatus.getItems().addAll(orderStatus);
-        cbServiceOrderStatus.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.CLOSED) {
-                cbServicesChosen.setDisable(true);
-                checkBoxClientScore.setDisable(true);
-                tableViewItems.setDisable(true);
-                btCancelService.setDisable(true);
-                btCancelService.setVisible(false);
-                btAddService.setDisable(true);
-                btRemoveService.setDisable(true);
-            } else if(cbServiceOrderStatus.getSelectionModel().getSelectedItem() == EOrderStatus.CANCELED) {
-                cbServicesChosen.setDisable(true);
-                checkBoxClientScore.setDisable(true);
-                tableViewItems.setDisable(true);
-                btCancelService.setDisable(true);
-                btCancelService.setVisible(false);
-                btAddService.setDisable(true);
-            } else {
-                cbServicesChosen.setDisable(false);
-                checkBoxClientScore.setDisable(false);
-                tableViewItems.setDisable(false);
-                btCancelService.setDisable(false);
-                btCancelService.setVisible(true);
-                btAddService.setDisable(false);
-                btRemoveService.setDisable(false);
-            }
-            updateTotalsUI();
-        });
-        cbServiceOrderStatus.getSelectionModel().select(EOrderStatus.OPENED);
+        tfOrderStatus.setText(EOrderStatus.OPENED.name());
     }
 }

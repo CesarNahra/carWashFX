@@ -72,6 +72,21 @@ public class ServiceOrderDAO {
         }
     }
 
+    public int countServiceOrdersByStatus(EOrderStatus orderStatus) {
+        String sql = "SELECT COUNT(*) FROM service_order WHERE service_order_status = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, orderStatus.name());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(VehicleDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
+
     public List<ServiceOrderModel> getAllServiceOrder() {
         String query = "SELECT so.service_order_number, so.service_order_discount, so.service_order_total_value, so.service_order_date, so.service_order_status from service_order so";
         List<ServiceOrderModel> serviceOrders = new ArrayList<>();
