@@ -1,5 +1,6 @@
 package org.example.carwashfx.controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
 import org.example.carwashfx.models.domain.EOrderStatus;
 import org.example.carwashfx.models.domain.ServiceOrderModel;
+import org.example.carwashfx.models.domain.VehicleModel;
 import org.example.carwashfx.utils.ViewNavigator;
 
 import java.net.URL;
@@ -33,6 +35,9 @@ public class GetServiceOrdersController implements Initializable {
     private TextField tfOrderDiscount;
 
     @FXML
+    private TextField tfVehiclePlate;
+
+    @FXML
     private DatePicker dpOrderDate;
 
     @FXML
@@ -49,6 +54,9 @@ public class GetServiceOrdersController implements Initializable {
 
     @FXML
     private TableColumn<ServiceOrderModel, Double> tcOrderDiscount;
+
+    @FXML
+    private TableColumn<ServiceOrderModel, String> tcVehiclePlate;
 
     @FXML
     private TableColumn<ServiceOrderModel, EOrderStatus> tcOrderStatus;
@@ -84,6 +92,10 @@ public class GetServiceOrdersController implements Initializable {
         tcOrderValue.setCellValueFactory(new PropertyValueFactory<>("totalValue"));
         tcOrderStatus.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
         tcOrderDiscount.setCellValueFactory(new PropertyValueFactory<>("orderDiscount"));
+//        tcVehiclePlate.setCellValueFactory(cellData -> {
+//            vehicle = cellData.getValue().getVehicle();
+//            return new SimpleStringProperty(vehicle.getVehiclePlate());
+//        });
 
         serviceOrderList = serviceOrderDAO.getAllServiceOrder();
 
@@ -98,6 +110,7 @@ public class GetServiceOrdersController implements Initializable {
             tfTotalValue.setText(String.valueOf(serviceOrder.getTotalValue()));
             tfOrderDiscount.setText(String.valueOf(serviceOrder.getOrderDiscount()));
             cbOrderStatus.getSelectionModel().select(serviceOrder.getOrderStatus());
+//            tfVehiclePlate.setText(serviceOrder.getVehicle().getVehiclePlate());
         }
     }
 
