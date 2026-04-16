@@ -133,6 +133,17 @@ public class RegisterOwnerController implements Initializable {
     }
 
     @FXML
+    protected void onHandleShowAfterSellDashboard(ActionEvent event) {
+        Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/dashboard.png")));
+        stage.setTitle("Dashboard de Pós Vendas");
+
+        ViewNavigator.openView(stage, "AfterSellDashboard.fxml");
+
+    }
+
+    @FXML
     protected void btRegisterClientOnAction(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação de novo cliente");

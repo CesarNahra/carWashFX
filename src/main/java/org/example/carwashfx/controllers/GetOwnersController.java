@@ -238,6 +238,17 @@ public class GetOwnersController implements Initializable {
 
     }
 
+    @FXML
+    protected void onHandleShowAfterSellDashboard(ActionEvent event) {
+        Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/dashboard.png")));
+        stage.setTitle("Dashboard de Pós Vendas");
+
+        ViewNavigator.openView(stage, "AfterSellDashboard.fxml");
+
+    }
+
 
     @FXML
     protected void onHandleUpdateOwner(ActionEvent event) {
