@@ -92,10 +92,6 @@ public class GetServiceOrdersController implements Initializable {
         tcOrderValue.setCellValueFactory(new PropertyValueFactory<>("totalValue"));
         tcOrderStatus.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
         tcOrderDiscount.setCellValueFactory(new PropertyValueFactory<>("orderDiscount"));
-//        tcVehiclePlate.setCellValueFactory(cellData -> {
-//            vehicle = cellData.getValue().getVehicle();
-//            return new SimpleStringProperty(vehicle.getVehiclePlate());
-//        });
 
         serviceOrderList = serviceOrderDAO.getAllServiceOrder();
 
@@ -110,7 +106,6 @@ public class GetServiceOrdersController implements Initializable {
             tfTotalValue.setText(String.valueOf(serviceOrder.getTotalValue()));
             tfOrderDiscount.setText(String.valueOf(serviceOrder.getOrderDiscount()));
             cbOrderStatus.getSelectionModel().select(serviceOrder.getOrderStatus());
-//            tfVehiclePlate.setText(serviceOrder.getVehicle().getVehiclePlate());
         }
     }
 
