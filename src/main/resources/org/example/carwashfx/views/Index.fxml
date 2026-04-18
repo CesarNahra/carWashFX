@@ -36,8 +36,6 @@
                   </Menu>
                 <Menu mnemonicParsing="false" text="Dashboards">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#onHandleShowSellDashboard" text="Dashboard de Vendas" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
                       <MenuItem mnemonicParsing="false" onAction="#onHandleShowAttendanceDashboard" text="Dashboard de Atendimentos" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onHandleShowAfterSellDashboard" text="Dashboard de Pós Venda" />

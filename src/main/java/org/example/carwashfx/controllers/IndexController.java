@@ -63,17 +63,6 @@ public class IndexController {
     }
 
     @FXML
-    protected void onHandleShowSellDashboard(ActionEvent event) {
-        Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
-
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/dashboard.png")));
-        stage.setTitle("Dashboard de Vendas");
-
-        ViewNavigator.openView(stage, "SellDashboard.fxml");
-
-    }
-
-    @FXML
     protected void onHandleShowAttendanceDashboard(ActionEvent event) {
         Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
 

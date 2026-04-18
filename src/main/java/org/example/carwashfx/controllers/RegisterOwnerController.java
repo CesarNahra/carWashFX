@@ -100,6 +100,17 @@ public class RegisterOwnerController implements Initializable {
     }
 
     @FXML
+    protected void onHandleGetServiceOrdersOnAction(ActionEvent event) {
+        Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/add.png")));
+        stage.setTitle("Listagem de Ordens");
+
+        ViewNavigator.openView(stage, "GetServiceOrders.fxml");
+
+    }
+
+    @FXML
     protected void onHandleRegisterVehicle(ActionEvent event) {
         Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
 
@@ -107,17 +118,6 @@ public class RegisterOwnerController implements Initializable {
         stage.setTitle("Registro de Veículo");
 
         ViewNavigator.openView(stage, "RegisterVehicle.fxml");
-
-    }
-
-    @FXML
-    protected void onHandleShowSellDashboard(ActionEvent event) {
-        Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
-
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon/dashboard.png")));
-        stage.setTitle("Dashboard de Vendas");
-
-        ViewNavigator.openView(stage, "SellDashboard.fxml");
 
     }
 
