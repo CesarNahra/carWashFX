@@ -88,7 +88,7 @@ public class ServiceOrderDAO {
     }
 
     public List<ServiceOrderModel> getAllServiceOrder() {
-        String query = "SELECT so.service_order_number, so.service_order_discount, so.service_order_total_value, so.service_order_date, so.service_order_status from service_order so";
+        String query = "SELECT so.service_order_number, so.service_order_discount, so.service_order_total_value, so.service_order_date, so.service_order_status, v.vehicle_plate from service_order so join vehicle v on so.vehicle_id = v.vehicle_id";
         List<ServiceOrderModel> serviceOrders = new ArrayList<>();
 
         try {
@@ -103,6 +103,10 @@ public class ServiceOrderDAO {
                 serviceOrder.setOrderDate(rs.getDate("service_order_date").toLocalDate());
                 serviceOrder.setOrderStatus(EOrderStatus.valueOf(rs.getString("service_order_status")));
 
+                VehicleModel vehicle = new VehicleModel();
+                vehicle.setVehiclePlate(rs.getString("vehicle_plate"));
+
+                serviceOrder.setVehicle(vehicle);
                 serviceOrders.add(serviceOrder);
             }
         } catch (SQLException e) {
