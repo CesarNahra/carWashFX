@@ -14,10 +14,7 @@ import javafx.stage.Stage;
 import org.example.carwashfx.models.dao.ClientDAO;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
-import org.example.carwashfx.models.domain.ClientModel;
-import org.example.carwashfx.models.domain.NormalPersonModel;
-import org.example.carwashfx.models.domain.JuridicalPersonModel;
-import org.example.carwashfx.models.domain.ScoreModel;
+import org.example.carwashfx.models.domain.*;
 import org.example.carwashfx.utils.ViewNavigator;
 
 import java.net.URL;
@@ -95,6 +92,9 @@ public class GetOwnersController implements Initializable {
 
     @FXML
     private TableView<ClientModel> tableViewOwners;
+
+    @FXML
+    private TableView<VehicleModel> tableViewOwnersvehicles1;
 
     private List<ClientModel> ownerList;
     private ObservableList<ClientModel> observableOwnerList;

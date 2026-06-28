@@ -10,12 +10,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.example.carwashfx.controllers.exceptions.ExceptionWash;
 import org.example.carwashfx.models.dao.ServiceOrderDAO;
 import org.example.carwashfx.models.database.Database;
 import org.example.carwashfx.models.database.DatabaseFactory;
 import org.example.carwashfx.models.domain.EOrderStatus;
 import org.example.carwashfx.models.domain.ServiceOrderModel;
 import org.example.carwashfx.models.domain.VehicleModel;
+import org.example.carwashfx.report.ServiceOrderReport;
 import org.example.carwashfx.utils.ViewNavigator;
 
 import java.net.URL;
@@ -78,12 +80,16 @@ public class GetServiceOrdersController implements Initializable {
     @FXML
     private Button btCancelUpdateServiceOrder;
 
+    @FXML
+    private Button btServiceOrderReport;
+
     private List<ServiceOrderModel> serviceOrderList;
     private ObservableList<ServiceOrderModel> observableServiceOrderList;
 
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.connect();
     private final ServiceOrderDAO serviceOrderDAO = new ServiceOrderDAO();
+    private final ServiceOrderReport serviceOrderReport = new ServiceOrderReport();
 
 
     public void loadTableServiceOrderList() {
@@ -271,6 +277,19 @@ public class GetServiceOrdersController implements Initializable {
 
         ViewNavigator.openView(stage, "GetServiceOrders.fxml");
 
+    }
+
+    @FXML
+    protected void onHandleServiceOrderReport(ActionEvent event) {
+        try {
+            serviceOrderReport.showAllServiceOrdersReport(connection);
+        } catch (ExceptionWash e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Relatório de Ordens");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @Override

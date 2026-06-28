@@ -115,6 +115,7 @@
             <Button fx:id="btDeleteServiceOrder" layoutX="10.0" layoutY="134.0" mnemonicParsing="false" onAction="#onHandleDeleteServiceOrder" text="Excluir Ordem" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Button fx:id="btConfirmUpdateServiceOrder" mnemonicParsing="false" onAction="#onHandleConfirmUpdateServiceOrder" text="Confirmar" visible="false" GridPane.rowIndex="7" />
             <Button fx:id="btCancelUpdateServiceOrder" mnemonicParsing="false" onAction="#onHandleCancelUpdateServiceOrder" text="Cancelar" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Button fx:id="btServiceOrderReport" mnemonicParsing="false" onAction="#onHandleServiceOrderReport" text="Relatório Jasper" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>

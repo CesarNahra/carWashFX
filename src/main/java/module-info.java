@@ -10,12 +10,15 @@ module org.example.carwashfx {
     requires eu.hansolo.tilesfx;
     requires mysql.connector.j;
     requires java.sql;
+    requires java.desktop;
+    requires jasperreports;
 
     opens org.example.carwashfx to javafx.fxml;
     exports org.example.carwashfx;
     exports org.example.carwashfx.controllers;
     exports org.example.carwashfx.controllers.exceptions;
     exports org.example.carwashfx.models.domain;
+    exports org.example.carwashfx.report;
     opens org.example.carwashfx.controllers to javafx.fxml;
     opens org.example.carwashfx.models.domain to javafx.base;
 }

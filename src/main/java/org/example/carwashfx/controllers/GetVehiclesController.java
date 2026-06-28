@@ -100,7 +100,13 @@ public class GetVehiclesController implements Initializable {
     private ObservableList<VehicleModel> observableVehicleList;
 
     private final Database database = DatabaseFactory.getDatabase("mysql");
-    private final Connection connection = database.connect();
+    private final Connection connection;
+
+    {
+        assert database != null;
+        connection = database.connect();
+    }
+
     private final VehicleDAO vehicleDAO = new VehicleDAO();
 
 
