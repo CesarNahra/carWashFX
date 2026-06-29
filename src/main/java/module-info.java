@@ -11,7 +11,8 @@ module org.example.carwashfx {
     requires mysql.connector.j;
     requires java.sql;
     requires java.desktop;
-    requires jasperreports;
+    requires net.sf.jasperreports.core;
+
 
     opens org.example.carwashfx to javafx.fxml;
     exports org.example.carwashfx;

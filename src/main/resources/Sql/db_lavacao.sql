@@ -176,8 +176,19 @@ INSERT INTO vehicle (vehicle_plate, vehicle_observations, client_id, vehicle_mod
 
 select * from vehicle_model;
 
-insert into service_order(service_order_number, service_order_total_value, service_order_date, service_order_discount, service_order_status, vehicle_model_id, service_id) values (1, 20.00, '2026-01-01', 0.00, 'OPENED', 1, 1);
+insert into service_order(service_order_number, service_order_total_value, service_order_date, service_order_discount, service_order_status, vehicle_id) values (1, 20.00, '2026-01-01', 0.00, 'OPENED', 1);
 
+INSERT INTO service_order(service_order_number, service_order_total_value, service_order_date, service_order_discount, service_order_status, vehicle_id) VALUES
+                                                                                                                                                             (2, 150.00, '2026-01-15', 15.00, 'CLOSED', 2),
+                                                                                                                                                         (3, 450.50, '2026-02-10', 0.00, 'CLOSED', 3),
+                                                                                                                                                             (4, 85.00, '2026-02-28', 5.00, 'OPENED', 1),
+                                                                                                                                                             (5, 1200.00, '2026-03-05', 100.00, 'CLOSED', 4),
+                                                                                                                                                             (6, 310.25, '2026-03-22', 0.00, 'CANCELED', 2),
+                                                                                                                                                             (7, 95.00, '2026-04-12', 10.00, 'CLOSED', 5),
+                                                                                                                                                             (8, 60.00, '2026-05-19', 0.00, 'OPENED', 3),
+                                                                                                                                                             (9, 2350.00, '2026-06-01', 250.00, 'CLOSED', 6),
+                                                                                                                                                             (10, 180.00, '2026-06-15', 18.00, 'CLOSED', 1),
+                                                                                                                                                             (11, 420.00, '2026-06-28', 0.00, 'OPENED', 4);
 
 insert into item_os(item_value, item_observations, service_order_number, service_id) values (50.00, 'nós tá bom', 1, 1);
 
