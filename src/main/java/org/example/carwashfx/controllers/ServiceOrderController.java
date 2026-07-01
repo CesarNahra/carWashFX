@@ -374,7 +374,7 @@ public class ServiceOrderController implements Initializable {
             }
         });
 
-        serviceList = serviceDAO.getServicesByCategory(ECategory.LARGE);
+        serviceList = serviceDAO.getAllServices();
         observableServiceList = FXCollections.observableArrayList(serviceList);
 
         cbServicesChosen.setItems(observableServiceList);

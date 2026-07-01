@@ -6,6 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.carwashfx.models.dao.*;
@@ -14,6 +18,7 @@ import org.example.carwashfx.models.database.DatabaseFactory;
 import org.example.carwashfx.models.domain.*;
 import org.example.carwashfx.utils.ViewNavigator;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
@@ -33,13 +38,13 @@ public class RegisterVehicleController implements Initializable {
     private TextArea taVehicleObservations;
 
     @FXML
-    private ChoiceBox<BrandModel> cbVehicleBrand;
+    private ComboBox<BrandModel> cbVehicleBrand;
 
     @FXML
     private ChoiceBox<EGasType> cbVehicleGasType;
 
     @FXML
-    private ChoiceBox<ColorModel> cbVehicleColor;
+    private ComboBox<ColorModel> cbVehicleColor;
 
     @FXML
     private ChoiceBox<ECategory> cbVehicleCategory;
@@ -152,8 +157,8 @@ public class RegisterVehicleController implements Initializable {
 
     @FXML
     protected void btRegisterVehicleOnAction(ActionEvent event) {
-        BrandModel brand = cbVehicleBrand.getSelectionModel().getSelectedItem();
-        ColorModel color = cbVehicleColor.getSelectionModel().getSelectedItem();
+        BrandModel brand = cbVehicleBrand.getValue();
+        ColorModel color = cbVehicleColor.getValue();
         ClientModel client = comboVehicleOwner.getSelectionModel().getSelectedItem();
         ECategory category = cbVehicleCategory.getSelectionModel().getSelectedItem();
         EGasType gasType = cbVehicleGasType.getSelectionModel().getSelectedItem();
@@ -211,10 +216,54 @@ public class RegisterVehicleController implements Initializable {
 
         cbVehicleColor.setItems(observableColorList);
 
+        cbVehicleColor.setConverter(new javafx.util.StringConverter<ColorModel>() {
+            @Override
+            public String toString(ColorModel color) {
+                // Como o objeto aparece na lista e no campo de texto
+                return (color == null) ? "" : color.getColorName(); // Troque .getName() pelo atributo de nome da sua BrandModel
+            }
+
+            @Override
+            public ColorModel fromString(String string) {
+                // Tenta encontrar uma marca existente com esse nome
+                return observableColorList.stream()
+                        .filter(color -> color.getColorName().equals(string))
+                        .findFirst()
+                        .orElseGet(() -> {
+                            // Se não existir, cria um objeto temporário ou novo
+                            ColorModel newColor = new ColorModel();
+                            newColor.setColorName(string); // Ajuste conforme sua classe
+                            return newColor;
+                        });
+            }
+        });
+
         brandList = brandDAO.getAllBrands();
         observableBrandList = FXCollections.observableArrayList(brandList);
 
         cbVehicleBrand.setItems(observableBrandList);
+
+        cbVehicleBrand.setConverter(new javafx.util.StringConverter<BrandModel>() {
+            @Override
+            public String toString(BrandModel brand) {
+                // Como o objeto aparece na lista e no campo de texto
+                return (brand == null) ? "" : brand.getBrandName(); // Troque .getName() pelo atributo de nome da sua BrandModel
+            }
+
+            @Override
+            public BrandModel fromString(String string) {
+                // Tenta encontrar uma marca existente com esse nome
+                return observableBrandList.stream()
+                        .filter(brand -> brand.getBrandName().equals(string))
+                        .findFirst()
+                        .orElseGet(() -> {
+                            // Se não existir, cria um objeto temporário ou novo
+                            BrandModel newBrand = new BrandModel();
+                            newBrand.setBrandName(string); // Ajuste conforme sua classe
+                            return newBrand;
+                        });
+            }
+        });
 
         loadClientData();
         comboVehicleOwner.setItems(observableOwnerList);
